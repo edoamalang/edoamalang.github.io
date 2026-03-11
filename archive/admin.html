@@ -31,6 +31,7 @@
     .login-desc { font-size: 0.9rem; color: var(--fg-muted); }
     .google-btn { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 2px; cursor: pointer; font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--fg); transition: border-color 0.2s; }
     .google-btn:hover { border-color: var(--amber); }
+    .unauthorized-msg { display: none; font-family: 'Syne', sans-serif; font-size: 0.8rem; color: var(--red); background: rgba(239,83,80,0.1); border: 1px solid rgba(239,83,80,0.3); padding: 0.75rem 1.25rem; border-radius: 2px; text-align: center; max-width: 340px; }
 
     #admin-screen { display: none; padding: 5rem 2rem 4rem; max-width: 1000px; margin: 0 auto; }
     .page-header { margin-bottom: 2rem; }
@@ -84,6 +85,7 @@
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
       Sign in with Google
     </button>
+    <p class="unauthorized-msg" id="unauthorized-msg">This Google account is not authorized to access the admin panel.</p>
   </div>
 
   <div id="admin-screen">
@@ -107,6 +109,10 @@
     import { getFirestore, collection, query, where, orderBy, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
+    const AUTHORIZED_EMAILS = [
+      "noahhfountainn@gmail.com"
+    ];
+
     const firebaseConfig = {
       apiKey: "AIzaSyCoh1oS6Vce5juV_wk7BEcGuFhwwA8TqgE",
       authDomain: "ede-archive.firebaseapp.com",
@@ -124,22 +130,40 @@
 
     let currentTab = "pending";
 
+    function isAuthorized(user) {
+      return user && AUTHORIZED_EMAILS.includes(user.email.toLowerCase());
+    }
+
     // Auth state
     onAuthStateChanged(auth, user => {
-      if (user) {
+      if (user && isAuthorized(user)) {
         document.getElementById("login-screen").style.display = "none";
         document.getElementById("admin-screen").style.display = "block";
         document.getElementById("user-info").textContent = user.email;
         document.getElementById("sign-out-btn").style.display = "block";
+        document.getElementById("unauthorized-msg").style.display = "none";
         loadSubmissions(currentTab);
       } else {
         document.getElementById("login-screen").style.display = "flex";
         document.getElementById("admin-screen").style.display = "none";
         document.getElementById("sign-out-btn").style.display = "none";
+        // If a user is signed in but not authorized, sign them out and show the error
+        if (user && !isAuthorized(user)) {
+          signOut(auth);
+          document.getElementById("unauthorized-msg").style.display = "block";
+        }
       }
     });
 
-    document.getElementById("google-login-btn").addEventListener("click", () => signInWithPopup(auth, provider));
+    document.getElementById("google-login-btn").addEventListener("click", async () => {
+      document.getElementById("unauthorized-msg").style.display = "none";
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        // Popup closed or other error — silently ignore
+      }
+    });
+
     document.getElementById("sign-out-btn").addEventListener("click", () => signOut(auth));
 
     // Tabs
