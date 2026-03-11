@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Êdōâma dâ Enêoķe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gray-light: #C8C8C8;
+      --amber: #D4A96A;
+      --charcoal: #555555;
+      --black: #1a1a1a;
+      --white: #f5f3ef;
+      --amber-dark: #b8894a;
+      --amber-muted: rgba(212, 169, 106, 0.15);
+
+      --bg: var(--white);
+      --fg: var(--black);
+      --fg-muted: #666;
+      --fg-subtle: #999;
+      --card-bg: rgba(255,255,255,0.7);
+      --card-border: rgba(0,0,0,0.08);
+      --nav-bg: rgba(245, 243, 239, 0.92);
+      --divider: rgba(0,0,0,0.1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1e1d1b;
+        --fg: #e8e4dc;
+        --fg-muted: #aaa;
+        --fg-subtle: #666;
+        --card-bg: rgba(40,38,34,0.8);
+        --card-border: rgba(255,255,255,0.08);
+        --nav-bg: rgba(30, 29, 27, 0.92);
+        --divider: rgba(255,255,255,0.08);
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Newsreader', Georgia, serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--divider);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .nav-logo .dot {
+      width: 8px; height: 8px;
+      background: var(--amber);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--amber); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 2rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.35s;
+    }
+
+    .hero-title .amber { color: var(--amber); }
+
+    .hero-subtitle {
+      font-family: 'Newsreader', serif;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-style: italic;
+      color: var(--fg-muted);
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.5s;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--fg-muted);
+      max-width: 540px;
+      margin-top: 1.5rem;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.65s;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.8s;
+    }
+
+    .btn {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.75rem 1.75rem;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--amber);
+      color: #1a1a1a;
+    }
+
+    .btn-primary:hover {
+      background: var(--amber-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--divider);
+      color: var(--fg-muted);
+      background: transparent;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+      transform: translateY(-1px);
+    }
+
+    /* FLAG STRIPE */
+    .flag-stripe {
+      width: 100%;
+      display: flex;
+      height: 5px;
+      margin-top: 4rem;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 1s;
+    }
+
+    .stripe-light { flex: 1; background: var(--gray-light); }
+    .stripe-amber { flex: 1; background: var(--amber); }
+    .stripe-dark { flex: 1; background: var(--charcoal); }
+
+    /* ABOUT */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .section-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-text h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+      color: var(--fg);
+    }
+
+    .about-text p {
+      font-size: 1rem;
+      color: var(--fg-muted);
+      line-height: 1.75;
+      margin-bottom: 1rem;
+    }
+
+    .about-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      padding: 1.25rem 1.5rem;
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--amber);
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--fg-muted);
+    }
+
+    /* LINKS GRID */
+    .links-section {
+      border-top: 1px solid var(--divider);
+    }
+
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1px;
+      background: var(--divider);
+      border: 1px solid var(--divider);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .link-card {
+      background: var(--card-bg);
+      padding: 2rem;
+      text-decoration: none;
+      color: var(--fg);
+      transition: background 0.2s;
+      display: block;
+    }
+
+    .link-card:hover {
+      background: var(--amber-muted);
+    }
+
+    .link-card:hover .link-arrow { transform: translate(3px, -3px); }
+
+    .link-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .link-icon {
+      font-size: 1.5rem;
+    }
+
+    .link-arrow {
+      font-size: 1rem;
+      color: var(--fg-subtle);
+      transition: transform 0.2s;
+    }
+
+    .link-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      color: var(--fg);
+    }
+
+    .link-desc {
+      font-size: 0.85rem;
+      color: var(--fg-muted);
+      line-height: 1.5;
+    }
+
+    /* ANNOUNCEMENTS */
+    .announcements-section {
+      border-top: 1px solid var(--divider);
+    }
+
+    .announcements-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 2rem;
+    }
+
+    .announcements-header h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .see-all {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      text-decoration: none;
+    }
+
+    .see-all:hover { text-decoration: underline; }
+
+    .announcement-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--divider);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .announcement-item {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--divider);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.5rem;
+      align-items: start;
+      text-decoration: none;
+      color: var(--fg);
+      background: var(--card-bg);
+      transition: background 0.2s;
+    }
+
+    .announcement-item:last-child { border-bottom: none; }
+    .announcement-item:hover { background: var(--amber-muted); }
+
+    .announcement-date {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+      width: 60px;
+      padding-top: 0.15rem;
+    }
+
+    .announcement-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: var(--fg);
+    }
+
+    .announcement-preview {
+      font-size: 0.88rem;
+      color: var(--fg-muted);
+      line-height: 1.5;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--divider);
+      padding: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-left {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+    }
+
+    .footer-right {
+      font-size: 0.82rem;
+      color: var(--fg-subtle);
+      font-style: italic;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .nav-links { display: none; }
+      .announcements-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">
+      <span class="dot"></span>
+      Êdōâma dâ Enêoķe
+    </a>
+    <ul class="nav-links">
+      <li><a href="/docs">Docs</a></li>
+      <li><a href="/dictionary">Dictionary</a></li>
+      <li><a href="/learn">Learn</a></li>
+      <li><a href="/archive">Archive</a></li>
+      <li><a href="/downloads">Downloads</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <p class="hero-eyebrow">Êdōâma dâ Enêoķe &nbsp;·&nbsp; Language of Raccoons</p>
+      <h1 class="hero-title">
+        A language<br />
+        built by <span class="amber">its</span><br />
+        community.
+      </h1>
+      <p class="hero-subtitle">ķalōtōn — welcome</p>
+      <p class="hero-desc">
+        Êdōâma dâ Enêoķe is a constructed language created for communication.
+        This is its official resource hub — documentation, dictionary, learning materials, and more.
+      </p>
+      <div class="hero-actions">
+        <a href="/learn" class="btn btn-primary">Start Learning</a>
+        <a href="/docs" class="btn btn-secondary">Read the Docs</a>
+      </div>
+      <div class="flag-stripe">
+        <div class="stripe-light"></div>
+        <div class="stripe-amber"></div>
+        <div class="stripe-dark"></div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section class="about-section">
+      <p class="section-label">About</p>
+      <div class="about-grid">
+        <div class="about-text">
+          <h2>Small language.<br />Big ambitions.</h2>
+          <p>
+            Êde is a constructed language using Latin characters with diacritics to mark sound changes.
+            It follows SVO sentence structure and features a productive system of prefixes and suffixes
+            for deriving new words from existing roots.
+          </p>
+          <p>
+            The language is actively developed — new words, grammar rules, and community resources
+            are added regularly. Anyone is welcome to learn, contribute, and use it.
+          </p>
+        </div>
+        <div class="about-visual">
+          <div class="stat-card">
+            <span class="stat-num">234+</span>
+            <span class="stat-label">dictionary entries</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">4</span>
+            <span class="stat-label">active community departments</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">2026</span>
+            <span class="stat-label">year of the Great Reform</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUICK LINKS -->
+    <section class="links-section">
+      <p class="section-label">Resources</p>
+      <div class="links-grid">
+        <a href="/docs" class="link-card">
+          <div class="link-card-top">
+            <span class="link-icon">📖</span>
+            <span class="link-arrow">↗</span>
+          </div>
+          <div class="link-title">Documentation</div>
+          <div class="link-desc">Grammar rules, phonology, sentence structure, and derivation.</div>
+        </a>
+        <a href="/dictionary" class="link-card">
+          <div class="link-card-top">
+            <span class="link-icon">🔤</span>
+            <span class="link-arrow">↗</span>
+          </div>
+          <div class="link-title">Dictionary</div>
+          <div class="link-desc">Searchable reference of all standardized êde vocabulary.</div>
+        </a>
+        <a href="/learn" class="link-card">
+          <div class="link-card-top">
+            <span class="link-icon">🦝</span>
+            <span class="link-arrow">↗</span>
+          </div>
+          <div class="link-title">Learning Path</div>
+          <div class="link-desc">Structured lessons for beginners through to fluency.</div>
+        </a>
+        <a href="/archive" class="link-card">
+          <div class="link-card-top">
+            <span class="link-icon">🗂️</span>
+            <span class="link-arrow">↗</span>
+          </div>
+          <div class="link-title">Archive</div>
+          <div class="link-desc">Community literature, translations, art, and lexicon submissions.</div>
+        </a>
+        <a href="/downloads" class="link-card">
+          <div class="link-card-top">
+            <span class="link-icon">⬇️</span>
+            <span class="link-arrow">↗</span>
+          </div>
+          <div class="link-title">Downloads</div>
+          <div class="link-desc">Official documents, reference sheets, and printable materials.</div>
+        </a>
+        <a href="https://discord.gg/placeholder" class="link-card">
+          <div class="link-card-top">
+            <span class="link-icon">💬</span>
+            <span class="link-arrow">↗</span>
+          </div>
+          <div class="link-title">Community</div>
+          <div class="link-desc">Join the Discord server to learn, discuss, and contribute.</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ANNOUNCEMENTS -->
+    <section class="announcements-section">
+      <div class="announcements-header">
+        <div>
+          <p class="section-label">Latest</p>
+          <h2>Announcements</h2>
+        </div>
+        <a href="/announcements" class="see-all">See all →</a>
+      </div>
+      <div class="announcement-list">
+        <a href="#" class="announcement-item">
+          <span class="announcement-date">Mar 11</span>
+          <div>
+            <div class="announcement-title">The Great Reform — Part 1</div>
+            <div class="announcement-preview">A major overhaul of êde has begun. Part 1 establishes a complete question system, temporal prefixes, sequential ordering, and movement verbs.</div>
+          </div>
+        </a>
+        <a href="#" class="announcement-item">
+          <span class="announcement-date">Mar 10</span>
+          <div>
+            <div class="announcement-title">ÊCCP Now Active</div>
+            <div class="announcement-preview">The Êde Community Conduct Policy is now official. All four departments are active as of March 20, 2026.</div>
+          </div>
+        </a>
+        <a href="#" class="announcement-item">
+          <span class="announcement-date">Jan 22</span>
+          <div>
+            <div class="announcement-title">Language Documentation Updated</div>
+            <div class="announcement-preview">Phonology, grammar, and pronoun documentation updated with new inquisitive pronoun system and formality rules.</div>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span class="footer-left">Êdōâma dâ Enêoķe · edoamalang.github.io</span>
+    <span class="footer-right">created by Nôu F. · language of raccoons</span>
+  </footer>
+
+</body>
+</html>
