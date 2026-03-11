@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Announcements — Êdōâma dâ Enêoķe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --amber: #D4A96A; --amber-dark: #b8894a; --amber-muted: rgba(212,169,106,0.12);
+      --bg: #f5f3ef; --fg: #1a1a1a; --fg-muted: #666; --fg-subtle: #999;
+      --card-bg: rgba(255,255,255,0.8); --card-border: rgba(0,0,0,0.08);
+      --nav-bg: rgba(245,243,239,0.92); --divider: rgba(0,0,0,0.1);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1e1d1b; --fg: #e8e4dc; --fg-muted: #aaa; --fg-subtle: #666;
+        --card-bg: rgba(40,38,34,0.8); --card-border: rgba(255,255,255,0.08);
+        --nav-bg: rgba(30,29,27,0.92); --divider: rgba(255,255,255,0.08);
+      }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Newsreader', Georgia, serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--nav-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--divider); padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    .nav-logo .dot { width: 8px; height: 8px; background: var(--amber); border-radius: 50%; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--amber); }
+
+    .page-wrap { max-width: 720px; margin: 0 auto; padding: 7rem 2rem 4rem; }
+    .page-eyebrow { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.75rem; }
+    .page-title { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; line-height: 1; margin-bottom: 2.5rem; }
+
+    .announcement-list { display: flex; flex-direction: column; border: 1px solid var(--divider); border-radius: 4px; overflow: hidden; }
+
+    .announcement-item { display: block; padding: 1.75rem; border-bottom: 1px solid var(--divider); background: var(--card-bg); text-decoration: none; color: var(--fg); transition: background 0.2s; }
+    .announcement-item:last-child { border-bottom: none; }
+    .announcement-item:hover { background: var(--amber-muted); }
+
+    .item-date { font-family: 'Syne', sans-serif; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-subtle); margin-bottom: 0.4rem; }
+    .item-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--fg); }
+    .item-preview { font-size: 0.92rem; color: var(--fg-muted); line-height: 1.6; margin-bottom: 0.75rem; }
+    .item-read { font-family: 'Syne', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); }
+
+    .empty { padding: 3rem; text-align: center; color: var(--fg-subtle); font-style: italic; }
+    .loading { padding: 3rem; text-align: center; color: var(--fg-subtle); font-family: 'Syne', sans-serif; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    footer { border-top: 1px solid var(--divider); padding: 2rem; max-width: 720px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-left { font-family: 'Syne', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-subtle); }
+    .footer-right { font-size: 0.82rem; color: var(--fg-subtle); font-style: italic; }
+
+    @media (max-width: 600px) { .nav-links { display: none; } footer { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../index.html" class="nav-logo"><span class="dot"></span>Êdōâma dâ Enêoķe</a>
+    <ul class="nav-links">
+      <li><a href="../downloads/êde.pdf">Docs</a></li>
+      <li><a href="../dictionary/index.html">Dictionary</a></li>
+      <li><a href="../archive/index.html">Archive</a></li>
+      <li><a href="../downloads/index.html">Downloads</a></li>
+      <li><a href="index.html" class="active">Announcements</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-wrap">
+    <p class="page-eyebrow">Community</p>
+    <h1 class="page-title">Announcements</h1>
+    <div class="announcement-list" id="announcement-list">
+      <div class="loading">Loading…</div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-left">Êdōâma dâ Enêoķe · Announcements</span>
+    <span class="footer-right">created by Nôu F. · language of raccoons</span>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCoh1oS6Vce5juV_wk7BEcGuFhwwA8TqgE",
+      authDomain: "ede-archive.firebaseapp.com",
+      projectId: "ede-archive",
+      storageBucket: "ede-archive.firebasestorage.app",
+      messagingSenderId: "813368382578",
+      appId: "1:813368382578:web:1261ad9ca88c6d8f595eeb",
+      measurementId: "G-87XMLVY3B7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadAnnouncements() {
+      const list = document.getElementById("announcement-list");
+      try {
+        const q = query(collection(db, "announcements"), orderBy("datePosted", "desc"));
+        const snap = await getDocs(q);
+        const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+        if (items.length === 0) { list.innerHTML = '<div class="empty">No announcements yet.</div>'; return; }
+
+        list.innerHTML = items.map(a => {
+          const date = a.datePosted?.toDate?.() ?? new Date();
+          const dateStr = date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+          return `
+            <a class="announcement-item" href="post.html?id=${a.id}">
+              <div class="item-date">${dateStr}</div>
+              <div class="item-title">${a.title}</div>
+              <div class="item-preview">${a.preview}</div>
+              <span class="item-read">Read more →</span>
+            </a>`;
+        }).join("");
+      } catch (err) {
+        list.innerHTML = `<div class="empty">Failed to load: ${err.message}</div>`;
+      }
+    }
+
+    loadAnnouncements();
+  </script>
+</body>
+</html>
