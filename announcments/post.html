@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Announcement — Êdōâma dâ Enêoķe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --amber: #D4A96A; --amber-dark: #b8894a;
+      --bg: #f5f3ef; --fg: #1a1a1a; --fg-muted: #666; --fg-subtle: #999;
+      --nav-bg: rgba(245,243,239,0.92); --divider: rgba(0,0,0,0.1);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #1e1d1b; --fg: #e8e4dc; --fg-muted: #aaa; --fg-subtle: #666; --nav-bg: rgba(30,29,27,0.92); --divider: rgba(255,255,255,0.08); }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Newsreader', Georgia, serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--nav-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--divider); padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    .nav-logo .dot { width: 8px; height: 8px; background: var(--amber); border-radius: 50%; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--amber); }
+
+    .page-wrap { max-width: 680px; margin: 0 auto; padding: 7rem 2rem 4rem; }
+
+    .back-link { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-subtle); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; margin-bottom: 2rem; transition: color 0.2s; }
+    .back-link:hover { color: var(--amber); }
+
+    .post-date { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--fg-subtle); margin-bottom: 0.75rem; }
+    .post-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--divider); }
+
+    .post-body { font-size: 1.05rem; line-height: 1.8; color: var(--fg); }
+    .post-body p { margin-bottom: 1.25rem; }
+    .post-body h2 { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin: 2rem 0 0.75rem; }
+    .post-body ul, .post-body ol { padding-left: 1.5rem; margin-bottom: 1.25rem; }
+    .post-body li { margin-bottom: 0.4rem; }
+    .post-body a { color: var(--amber); }
+
+    .error { color: var(--fg-subtle); font-style: italic; padding: 3rem 0; }
+
+    footer { border-top: 1px solid var(--divider); padding: 2rem; max-width: 680px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-left { font-family: 'Syne', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-subtle); }
+    .footer-right { font-size: 0.82rem; color: var(--fg-subtle); font-style: italic; }
+
+    @media (max-width: 600px) { .nav-links { display: none; } footer { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../index.html" class="nav-logo"><span class="dot"></span>Êdōâma dâ Enêoķe</a>
+    <ul class="nav-links">
+      <li><a href="../downloads/êde.pdf">Docs</a></li>
+      <li><a href="../dictionary/index.html">Dictionary</a></li>
+      <li><a href="../archive/index.html">Archive</a></li>
+      <li><a href="../downloads/index.html">Downloads</a></li>
+      <li><a href="index.html">Announcements</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-wrap">
+    <a href="index.html" class="back-link">← Announcements</a>
+    <div id="post-content"><p class="error">Loading…</p></div>
+  </div>
+
+  <footer>
+    <span class="footer-left">Êdōâma dâ Enêoķe · Announcements</span>
+    <span class="footer-right">created by Nôu F. · language of raccoons</span>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCoh1oS6Vce5juV_wk7BEcGuFhwwA8TqgE",
+      authDomain: "ede-archive.firebaseapp.com",
+      projectId: "ede-archive",
+      storageBucket: "ede-archive.firebasestorage.app",
+      messagingSenderId: "813368382578",
+      appId: "1:813368382578:web:1261ad9ca88c6d8f595eeb",
+      measurementId: "G-87XMLVY3B7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const id = new URLSearchParams(window.location.search).get("id");
+    const container = document.getElementById("post-content");
+
+    if (!id) {
+      container.innerHTML = '<p class="error">No announcement specified.</p>';
+    } else {
+      getDoc(doc(db, "announcements", id)).then(snap => {
+        if (!snap.exists()) { container.innerHTML = '<p class="error">Announcement not found.</p>'; return; }
+        const a = snap.data();
+        const date = a.datePosted?.toDate?.() ?? new Date();
+        const dateStr = date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+        document.title = `${a.title} — Êdōâma dâ Enêoķe`;
+        container.innerHTML = `
+          <div class="post-date">${dateStr}</div>
+          <h1 class="post-title">${a.title}</h1>
+          <div class="post-body">${a.body}</div>`;
+      }).catch(err => {
+        container.innerHTML = `<p class="error">Failed to load: ${err.message}</p>`;
+      });
+    }
+  </script>
+</body>
+</html>
