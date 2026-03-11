@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Announcements Admin — Êdōâma dâ Enêoķe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --amber: #D4A96A; --amber-dark: #b8894a; --amber-muted: rgba(212,169,106,0.12);
+      --bg: #1e1d1b; --fg: #e8e4dc; --fg-muted: #aaa; --fg-subtle: #666;
+      --card-bg: rgba(40,38,34,0.9); --card-border: rgba(255,255,255,0.08);
+      --nav-bg: rgba(30,29,27,0.95); --divider: rgba(255,255,255,0.08);
+      --input-bg: #2a2825; --red: #ef5350; --green: #4caf50;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Newsreader', Georgia, serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--nav-bg); border-bottom: 1px solid var(--divider); padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    .nav-logo .dot { width: 8px; height: 8px; background: var(--amber); border-radius: 50%; }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .user-info { font-family: 'Syne', sans-serif; font-size: 0.75rem; color: var(--fg-muted); }
+    .sign-out-btn { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: none; border: 1px solid var(--divider); color: var(--fg-muted); padding: 0.3rem 0.75rem; border-radius: 2px; cursor: pointer; transition: all 0.2s; }
+    .sign-out-btn:hover { border-color: var(--amber); color: var(--amber); }
+
+    #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 1rem; padding: 2rem; }
+    .login-title { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; }
+    .login-desc { font-size: 0.9rem; color: var(--fg-muted); }
+    .google-btn { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 2px; cursor: pointer; font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--fg); transition: border-color 0.2s; }
+    .google-btn:hover { border-color: var(--amber); }
+
+    .error-msg { max-width: 400px; margin: 1rem auto 0; padding: 0.75rem 1rem; border-radius: 2px; font-family: 'Syne', sans-serif; font-size: 0.8rem; display: none; background: rgba(239,83,80,0.1); border: 1px solid rgba(239,83,80,0.3); color: var(--red); }
+
+    #admin-screen { display: none; max-width: 900px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+    .page-eyebrow { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.5rem; }
+    .page-title { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 2rem; }
+
+    .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+
+    /* COMPOSE */
+    .compose-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 4px; padding: 1.75rem; }
+    .compose-title { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.25rem; color: var(--fg-muted); }
+    .field { margin-bottom: 1.25rem; }
+    .field label { display: block; font-family: 'Syne', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-muted); margin-bottom: 0.35rem; }
+    .field input, .field textarea {
+      width: 100%; padding: 0.6rem 0.8rem;
+      background: var(--input-bg); border: 1px solid var(--card-border);
+      border-radius: 2px; font-family: 'Newsreader', serif; font-size: 0.95rem;
+      color: var(--fg); outline: none; transition: border-color 0.2s;
+    }
+    .field input:focus, .field textarea:focus { border-color: var(--amber); }
+    .field textarea { resize: vertical; min-height: 120px; }
+    .field .hint { font-size: 0.75rem; color: var(--fg-subtle); margin-top: 0.3rem; font-style: italic; }
+
+    .publish-btn { width: 100%; padding: 0.8rem; font-family: 'Syne', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: var(--amber); color: #1a1a1a; border: none; border-radius: 2px; cursor: pointer; transition: background 0.2s; }
+    .publish-btn:hover { background: var(--amber-dark); }
+    .publish-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .compose-status { margin-top: 0.75rem; font-family: 'Syne', sans-serif; font-size: 0.78rem; text-align: center; display: none; }
+    .compose-status.success { color: var(--green); display: block; }
+    .compose-status.error { color: var(--red); display: block; }
+
+    /* LIST */
+    .list-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 4px; overflow: hidden; }
+    .list-header { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-muted); padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--divider); }
+    .post-item { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--divider); display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+    .post-item:last-child { border-bottom: none; }
+    .post-item-title { font-family: 'Syne', sans-serif; font-size: 0.88rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .post-item-date { font-family: 'Syne', sans-serif; font-size: 0.65rem; color: var(--fg-subtle); letter-spacing: 0.08em; }
+    .delete-btn { font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: none; border: 1px solid rgba(239,83,80,0.3); color: var(--red); padding: 0.25rem 0.6rem; border-radius: 2px; cursor: pointer; white-space: nowrap; transition: all 0.2s; flex-shrink: 0; }
+    .delete-btn:hover { background: rgba(239,83,80,0.1); }
+
+    .list-empty { padding: 2rem; text-align: center; color: var(--fg-subtle); font-style: italic; font-size: 0.9rem; }
+    .list-loading { padding: 2rem; text-align: center; color: var(--fg-subtle); font-family: 'Syne', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    @media (max-width: 768px) { .admin-grid { grid-template-columns: 1fr; } .nav-links { display: none; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../index.html" class="nav-logo"><span class="dot"></span>Announcements Admin</a>
+    <div class="nav-right">
+      <span class="user-info" id="user-info"></span>
+      <button class="sign-out-btn" id="sign-out-btn" style="display:none">Sign Out</button>
+    </div>
+  </nav>
+
+  <div id="login-screen">
+    <p class="login-title">Announcements Admin</p>
+    <p class="login-desc">Sign in with your authorized Google account.</p>
+    <button class="google-btn" id="google-login-btn">
+      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
+      Sign in with Google
+    </button>
+  </div>
+
+  <div class="error-msg" id="error-msg"></div>
+
+  <div id="admin-screen">
+    <p class="page-eyebrow">Admin Panel</p>
+    <h1 class="page-title">Announcements</h1>
+    <div class="admin-grid">
+      <!-- COMPOSE -->
+      <div class="compose-card">
+        <p class="compose-title">New Announcement</p>
+        <div class="field">
+          <label>Title</label>
+          <input type="text" id="post-title" placeholder="Announcement title" />
+        </div>
+        <div class="field">
+          <label>Preview</label>
+          <input type="text" id="post-preview" placeholder="Short summary shown in the list" />
+          <p class="hint">Keep this to 1–2 sentences.</p>
+        </div>
+        <div class="field">
+          <label>Body</label>
+          <textarea id="post-body" placeholder="Full announcement text. Basic HTML is supported (e.g. &lt;b&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;a&gt;)."></textarea>
+        </div>
+        <button class="publish-btn" id="publish-btn">Publish Announcement</button>
+        <p class="compose-status" id="compose-status"></p>
+      </div>
+
+      <!-- LIST -->
+      <div class="list-card">
+        <p class="list-header">Published</p>
+        <div id="post-list"><div class="list-loading">Loading…</div></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+    import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCoh1oS6Vce5juV_wk7BEcGuFhwwA8TqgE",
+      authDomain: "ede-archive.firebaseapp.com",
+      projectId: "ede-archive",
+      storageBucket: "ede-archive.firebasestorage.app",
+      messagingSenderId: "813368382578",
+      appId: "1:813368382578:web:1261ad9ca88c6d8f595eeb",
+      measurementId: "G-87XMLVY3B7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    const ALLOWED_EMAILS = [
+      "noahhfountainn@gmail.com",
+    ];
+
+    let accessDenied = false;
+
+    getRedirectResult(auth).catch(err => {
+      document.getElementById("error-msg").textContent = `Sign-in error: ${err.message}`;
+      document.getElementById("error-msg").style.display = "block";
+    });
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        if (!ALLOWED_EMAILS.includes(user.email)) {
+          accessDenied = true;
+          signOut(auth);
+          return;
+        }
+        accessDenied = false;
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("admin-screen").style.display = "block";
+        document.getElementById("user-info").textContent = user.email;
+        document.getElementById("sign-out-btn").style.display = "block";
+        loadPosts();
+      } else {
+        document.getElementById("login-screen").style.display = "flex";
+        document.getElementById("admin-screen").style.display = "none";
+        document.getElementById("sign-out-btn").style.display = "none";
+        if (accessDenied) {
+          const errEl = document.getElementById("error-msg");
+          errEl.textContent = "Access denied — your account is not authorized.";
+          errEl.style.display = "block";
+        }
+      }
+    });
+
+    document.getElementById("google-login-btn").addEventListener("click", () => signInWithRedirect(auth, provider));
+    document.getElementById("sign-out-btn").addEventListener("click", () => signOut(auth));
+
+    async function loadPosts() {
+      const list = document.getElementById("post-list");
+      try {
+        const q = query(collection(db, "announcements"), orderBy("datePosted", "desc"));
+        const snap = await getDocs(q);
+        const posts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        if (posts.length === 0) { list.innerHTML = '<div class="list-empty">No announcements yet.</div>'; return; }
+        list.innerHTML = posts.map(p => {
+          const date = p.datePosted?.toDate?.() ?? new Date();
+          const dateStr = date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+          return `
+            <div class="post-item" id="post-${p.id}">
+              <div>
+                <div class="post-item-title">${p.title}</div>
+                <div class="post-item-date">${dateStr}</div>
+              </div>
+              <button class="delete-btn" data-id="${p.id}">Delete</button>
+            </div>`;
+        }).join("");
+        list.querySelectorAll(".delete-btn").forEach(btn => {
+          btn.addEventListener("click", () => deletePost(btn.dataset.id));
+        });
+      } catch (err) {
+        list.innerHTML = `<div class="list-empty">Failed to load: ${err.message}</div>`;
+      }
+    }
+
+    document.getElementById("publish-btn").addEventListener("click", async () => {
+      const title = document.getElementById("post-title").value.trim();
+      const preview = document.getElementById("post-preview").value.trim();
+      const body = document.getElementById("post-body").value.trim();
+      const statusEl = document.getElementById("compose-status");
+      const btn = document.getElementById("publish-btn");
+
+      if (!title || !preview || !body) {
+        statusEl.className = "compose-status error";
+        statusEl.textContent = "All fields are required.";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Publishing…";
+
+      try {
+        await addDoc(collection(db, "announcements"), { title, preview, body, datePosted: serverTimestamp() });
+        statusEl.className = "compose-status success";
+        statusEl.textContent = "Published!";
+        document.getElementById("post-title").value = "";
+        document.getElementById("post-preview").value = "";
+        document.getElementById("post-body").value = "";
+        btn.textContent = "Publish Announcement";
+        btn.disabled = false;
+        loadPosts();
+      } catch (err) {
+        statusEl.className = "compose-status error";
+        statusEl.textContent = `Error: ${err.message}`;
+        btn.disabled = false;
+        btn.textContent = "Publish Announcement";
+      }
+    });
+
+    async function deletePost(id) {
+      if (!confirm("Delete this announcement? This cannot be undone.")) return;
+      try {
+        await deleteDoc(doc(db, "announcements", id));
+        document.getElementById(`post-${id}`)?.remove();
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+      }
+    }
+  </script>
+</body>
+</html>
