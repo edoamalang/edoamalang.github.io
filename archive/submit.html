@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit — Archive — Êdōâma dâ Enêoķe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --amber: #D4A96A; --amber-dark: #b8894a; --amber-muted: rgba(212,169,106,0.12);
+      --bg: #f5f3ef; --fg: #1a1a1a; --fg-muted: #666; --fg-subtle: #999;
+      --card-bg: rgba(255,255,255,0.9); --card-border: rgba(0,0,0,0.08);
+      --nav-bg: rgba(245,243,239,0.92); --divider: rgba(0,0,0,0.1); --input-bg: #fff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #1e1d1b; --fg: #e8e4dc; --fg-muted: #aaa; --fg-subtle: #666; --card-bg: rgba(40,38,34,0.9); --card-border: rgba(255,255,255,0.08); --nav-bg: rgba(30,29,27,0.92); --divider: rgba(255,255,255,0.08); --input-bg: #2a2825; }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Newsreader', Georgia, serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--nav-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--divider); padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    .nav-logo .dot { width: 8px; height: 8px; background: var(--amber); border-radius: 50%; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--amber); }
+
+    .page-wrap { max-width: 680px; margin: 0 auto; padding: 7rem 2rem 4rem; }
+    .page-eyebrow { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.75rem; }
+    .page-title { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; line-height: 1; margin-bottom: 0.75rem; }
+    .page-desc { font-size: 0.95rem; color: var(--fg-muted); margin-bottom: 2.5rem; }
+
+    .form-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 4px; padding: 2rem; }
+
+    .field { margin-bottom: 1.5rem; }
+    .field label { display: block; font-family: 'Syne', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-muted); margin-bottom: 0.4rem; }
+    .field label .req { color: var(--amber); }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 0.65rem 0.85rem;
+      background: var(--input-bg); border: 1px solid var(--card-border);
+      border-radius: 2px; font-family: 'Newsreader', serif; font-size: 0.95rem;
+      color: var(--fg); outline: none; transition: border-color 0.2s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--amber); }
+    .field textarea { resize: vertical; min-height: 80px; }
+    .field .hint { font-size: 0.8rem; color: var(--fg-subtle); margin-top: 0.3rem; font-style: italic; }
+
+    .field-group { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .checkbox-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .checkbox-label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.88rem; color: var(--fg-muted); cursor: pointer; padding: 0.3rem 0.7rem; border: 1px solid var(--card-border); border-radius: 2px; transition: all 0.2s; }
+    .checkbox-label:has(input:checked) { border-color: var(--amber); background: var(--amber-muted); color: var(--fg); }
+    .checkbox-label input { width: 14px; height: 14px; accent-color: var(--amber); }
+
+    .content-toggle { display: flex; gap: 0; margin-bottom: 1rem; border: 1px solid var(--card-border); border-radius: 2px; overflow: hidden; }
+    .toggle-btn { flex: 1; padding: 0.5rem; font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: none; border: none; cursor: pointer; color: var(--fg-muted); transition: all 0.2s; }
+    .toggle-btn.active { background: var(--amber); color: #1a1a1a; }
+
+    #file-section, #url-section { display: none; }
+    #file-section.visible, #url-section.visible { display: block; }
+
+    .file-drop { border: 2px dashed var(--card-border); border-radius: 2px; padding: 2rem; text-align: center; cursor: pointer; transition: border-color 0.2s; }
+    .file-drop:hover, .file-drop.drag-over { border-color: var(--amber); }
+    .file-drop p { font-size: 0.88rem; color: var(--fg-muted); }
+    .file-drop .file-name { font-family: 'Syne', sans-serif; font-size: 0.8rem; color: var(--amber); margin-top: 0.5rem; }
+    #file-input { display: none; }
+
+    .submit-btn { width: 100%; padding: 0.85rem; font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: var(--amber); color: #1a1a1a; border: none; border-radius: 2px; cursor: pointer; transition: background 0.2s; margin-top: 0.5rem; }
+    .submit-btn:hover { background: var(--amber-dark); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .status-msg { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 2px; font-family: 'Syne', sans-serif; font-size: 0.8rem; display: none; }
+    .status-msg.success { background: rgba(100,200,100,0.1); border: 1px solid rgba(100,200,100,0.3); color: #2a7a2a; display: block; }
+    .status-msg.error { background: rgba(200,80,80,0.1); border: 1px solid rgba(200,80,80,0.3); color: #8a2020; display: block; }
+
+    @media (max-width: 600px) { .field-group { grid-template-columns: 1fr; } .nav-links { display: none; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../index.html" class="nav-logo"><span class="dot"></span>Êdōâma dâ Enêoķe</a>
+    <ul class="nav-links">
+      <li><a href="/docs">Docs</a></li>
+      <li><a href="../dictionary/index.html">Dictionary</a></li>
+      <li><a href="index.html">Archive</a></li>
+      <li><a href="/downloads">Downloads</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-wrap">
+    <p class="page-eyebrow">Archive · Submit</p>
+    <h1 class="page-title">Submit a Work</h1>
+    <p class="page-desc">Submissions are reviewed by staff before appearing in the archive. By submitting you confirm you are the creator or have permission to share this work.</p>
+
+    <div class="form-card">
+      <div class="field">
+        <label>Title <span class="req">*</span></label>
+        <input type="text" id="title" placeholder="Title of your work" required />
+      </div>
+
+      <div class="field-group">
+        <div class="field">
+          <label>Your Name / Handle <span class="req">*</span></label>
+          <input type="text" id="author" placeholder="Discord username" required />
+        </div>
+        <div class="field">
+          <label>Content Type <span class="req">*</span></label>
+          <select id="content-type" required>
+            <option value="">Select type…</option>
+            <option value="literature">Literature</option>
+            <option value="translation">Translation</option>
+            <option value="art">Art</option>
+            <option value="lexicon">Lexicon</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Languages Used <span class="req">*</span></label>
+        <div class="checkbox-group">
+          <label class="checkbox-label"><input type="checkbox" value="ede" /> Êde</label>
+          <label class="checkbox-label"><input type="checkbox" value="english" /> English</label>
+          <label class="checkbox-label"><input type="checkbox" value="other" /> Other</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Tags</label>
+        <input type="text" id="tags" placeholder="e.g. poem, short story, vocabulary (comma-separated)" />
+        <p class="hint">Optional — helps others find your work.</p>
+      </div>
+
+      <div class="field">
+        <label>Content <span class="req">*</span></label>
+        <div class="content-toggle">
+          <button class="toggle-btn active" id="btn-url" type="button">Link to content</button>
+          <button class="toggle-btn" id="btn-file" type="button">Upload file</button>
+        </div>
+        <div id="url-section" class="visible">
+          <input type="url" id="content-url" placeholder="https://…" />
+          <p class="hint">Link to a Google Doc, image, or other hosted content.</p>
+        </div>
+        <div id="file-section">
+          <div class="file-drop" id="file-drop">
+            <p>Drop a file here or click to browse</p>
+            <p class="hint">PDF, PNG, JPG, TXT — max 10MB</p>
+            <p class="file-name" id="file-name"></p>
+          </div>
+          <input type="file" id="file-input" accept=".pdf,.png,.jpg,.jpeg,.txt,.doc,.docx" />
+        </div>
+      </div>
+
+      <button class="submit-btn" id="submit-btn">Submit for Review</button>
+      <div class="status-msg" id="status-msg"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCoh1oS6Vce5juV_wk7BEcGuFhwwA8TqgE",
+      authDomain: "ede-archive.firebaseapp.com",
+      projectId: "ede-archive",
+      storageBucket: "ede-archive.firebasestorage.app",
+      messagingSenderId: "813368382578",
+      appId: "1:813368382578:web:1261ad9ca88c6d8f595eeb",
+      measurementId: "G-87XMLVY3B7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    // Toggle URL/file
+    let mode = "url";
+    document.getElementById("btn-url").addEventListener("click", () => {
+      mode = "url";
+      document.getElementById("btn-url").classList.add("active");
+      document.getElementById("btn-file").classList.remove("active");
+      document.getElementById("url-section").classList.add("visible");
+      document.getElementById("file-section").classList.remove("visible");
+    });
+    document.getElementById("btn-file").addEventListener("click", () => {
+      mode = "file";
+      document.getElementById("btn-file").classList.add("active");
+      document.getElementById("btn-url").classList.remove("active");
+      document.getElementById("file-section").classList.add("visible");
+      document.getElementById("url-section").classList.remove("visible");
+    });
+
+    // File drop
+    const drop = document.getElementById("file-drop");
+    const fileInput = document.getElementById("file-input");
+    drop.addEventListener("click", () => fileInput.click());
+    drop.addEventListener("dragover", e => { e.preventDefault(); drop.classList.add("drag-over"); });
+    drop.addEventListener("dragleave", () => drop.classList.remove("drag-over"));
+    drop.addEventListener("drop", e => { e.preventDefault(); drop.classList.remove("drag-over"); fileInput.files = e.dataTransfer.files; document.getElementById("file-name").textContent = fileInput.files[0]?.name || ""; });
+    fileInput.addEventListener("change", () => { document.getElementById("file-name").textContent = fileInput.files[0]?.name || ""; });
+
+    // Submit
+    document.getElementById("submit-btn").addEventListener("click", async () => {
+      const title = document.getElementById("title").value.trim();
+      const author = document.getElementById("author").value.trim();
+      const contentType = document.getElementById("content-type").value;
+      const languages = [...document.querySelectorAll(".checkbox-group input:checked")].map(c => c.value);
+      const tags = document.getElementById("tags").value.split(",").map(t => t.trim()).filter(Boolean);
+      const statusEl = document.getElementById("status-msg");
+      const btn = document.getElementById("submit-btn");
+
+      if (!title || !author || !contentType || languages.length === 0) {
+        statusEl.className = "status-msg error";
+        statusEl.textContent = "Please fill in all required fields.";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Submitting…";
+      statusEl.className = "status-msg";
+
+      try {
+        let contentUrl = document.getElementById("content-url").value.trim() || null;
+        let fileUrl = null;
+
+        if (mode === "file" && fileInput.files[0]) {
+          const file = fileInput.files[0];
+          if (file.size > 10 * 1024 * 1024) throw new Error("File exceeds 10MB limit.");
+          const storageRef = ref(storage, `submissions/${Date.now()}_${file.name}`);
+          await uploadBytes(storageRef, file);
+          fileUrl = await getDownloadURL(storageRef);
+        }
+
+        await addDoc(collection(db, "archive"), {
+          title, author, contentType, languages, tags,
+          contentUrl, fileUrl,
+          status: "pending",
+          dateSubmitted: serverTimestamp()
+        });
+
+        statusEl.className = "status-msg success";
+        statusEl.textContent = "Submitted successfully! Your work will appear in the archive after staff review.";
+        btn.textContent = "Submitted!";
+      } catch (err) {
+        statusEl.className = "status-msg error";
+        statusEl.textContent = `Error: ${err.message}`;
+        btn.disabled = false;
+        btn.textContent = "Submit for Review";
+      }
+    });
+  </script>
+</body>
+</html>
