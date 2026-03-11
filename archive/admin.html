@@ -105,7 +105,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
     import { getFirestore, collection, query, where, orderBy, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+    import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCoh1oS6Vce5juV_wk7BEcGuFhwwA8TqgE",
@@ -122,11 +122,35 @@
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
+    // =============================================
+    // ALLOWED ADMIN EMAILS — add/remove as needed
+    const ALLOWED_EMAILS = [
+      "noahhfountainn@gmail.com",
+      // "another@gmail.com",
+    ];
+    // =============================================
+
     let currentTab = "pending";
+
+    // Handle redirect result on page load
+    getRedirectResult(auth).catch(err => {
+      if (err) {
+        const errEl = document.getElementById("error-msg");
+        errEl.textContent = `Sign-in error: ${err.message}`;
+        errEl.style.display = "block";
+      }
+    });
 
     // Auth state
     onAuthStateChanged(auth, user => {
       if (user) {
+        if (!ALLOWED_EMAILS.includes(user.email)) {
+          signOut(auth);
+          const errEl = document.getElementById("error-msg");
+          errEl.textContent = "Access denied — your account is not authorized.";
+          errEl.style.display = "block";
+          return;
+        }
         document.getElementById("login-screen").style.display = "none";
         document.getElementById("admin-screen").style.display = "block";
         document.getElementById("user-info").textContent = user.email;
@@ -139,7 +163,7 @@
       }
     });
 
-    document.getElementById("google-login-btn").addEventListener("click", () => signInWithPopup(auth, provider));
+    document.getElementById("google-login-btn").addEventListener("click", () => signInWithRedirect(auth, provider));
     document.getElementById("sign-out-btn").addEventListener("click", () => signOut(auth));
 
     // Tabs
