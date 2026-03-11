@@ -1,0 +1,8 @@
+{
+  "type": "module",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "jsdom": "^24.0.0",
+    "dotenv": "^16.4.1"
+  }
+}
