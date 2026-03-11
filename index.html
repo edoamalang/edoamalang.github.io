@@ -16,7 +16,6 @@
       --white: #f5f3ef;
       --amber-dark: #b8894a;
       --amber-muted: rgba(212, 169, 106, 0.15);
-
       --bg: var(--white);
       --fg: var(--black);
       --fg-muted: #666;
@@ -26,480 +25,95 @@
       --nav-bg: rgba(245, 243, 239, 0.92);
       --divider: rgba(0,0,0,0.1);
     }
-
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #1e1d1b;
-        --fg: #e8e4dc;
-        --fg-muted: #aaa;
-        --fg-subtle: #666;
-        --card-bg: rgba(40,38,34,0.8);
-        --card-border: rgba(255,255,255,0.08);
-        --nav-bg: rgba(30, 29, 27, 0.92);
-        --divider: rgba(255,255,255,0.08);
+        --bg: #1e1d1b; --fg: #e8e4dc; --fg-muted: #aaa; --fg-subtle: #666;
+        --card-bg: rgba(40,38,34,0.8); --card-border: rgba(255,255,255,0.08);
+        --nav-bg: rgba(30, 29, 27, 0.92); --divider: rgba(255,255,255,0.08);
       }
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
+    body { font-family: 'Newsreader', Georgia, serif; background: var(--bg); color: var(--fg); line-height: 1.6; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
 
-    body {
-      font-family: 'Newsreader', Georgia, serif;
-      background: var(--bg);
-      color: var(--fg);
-      line-height: 1.6;
-      overflow-x: hidden;
-      transition: background 0.3s, color 0.3s;
-    }
-
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: var(--nav-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--divider);
-      padding: 0 2rem;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 0.95rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--fg);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .nav-logo .dot {
-      width: 8px; height: 8px;
-      background: var(--amber);
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--fg-muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--nav-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--divider); padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    .nav-logo .dot { width: 8px; height: 8px; background: var(--amber); border-radius: 50%; display: inline-block; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-muted); text-decoration: none; transition: color 0.2s; }
     .nav-links a:hover { color: var(--amber); }
 
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 8rem 2rem 4rem;
-      max-width: 1100px;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    .hero-eyebrow {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--amber);
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.2s;
-    }
-
-    .hero-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(3rem, 8vw, 7rem);
-      font-weight: 800;
-      line-height: 0.95;
-      letter-spacing: -0.02em;
-      color: var(--fg);
-      margin-bottom: 1rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.35s;
-    }
-
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 8rem 2rem 4rem; max-width: 1100px; margin: 0 auto; position: relative; }
+    .hero-eyebrow { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s ease forwards 0.2s; }
+    .hero-title { font-family: 'Syne', sans-serif; font-size: clamp(3rem, 8vw, 7rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.02em; color: var(--fg); margin-bottom: 1rem; opacity: 0; animation: fadeUp 0.8s ease forwards 0.35s; }
     .hero-title .amber { color: var(--amber); }
+    .hero-subtitle { font-family: 'Newsreader', serif; font-size: clamp(1rem, 2vw, 1.25rem); font-style: italic; color: var(--fg-muted); margin-bottom: 0.5rem; opacity: 0; animation: fadeUp 0.8s ease forwards 0.5s; }
+    .hero-desc { font-size: 1.05rem; color: var(--fg-muted); max-width: 540px; margin-top: 1.5rem; margin-bottom: 3rem; opacity: 0; animation: fadeUp 0.8s ease forwards 0.65s; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.8s ease forwards 0.8s; }
 
-    .hero-subtitle {
-      font-family: 'Newsreader', serif;
-      font-size: clamp(1rem, 2vw, 1.25rem);
-      font-style: italic;
-      color: var(--fg-muted);
-      margin-bottom: 0.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.5s;
-    }
+    .btn { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.75rem 1.75rem; border-radius: 2px; text-decoration: none; transition: all 0.2s; display: inline-block; }
+    .btn-primary { background: var(--amber); color: #1a1a1a; }
+    .btn-primary:hover { background: var(--amber-dark); transform: translateY(-1px); }
+    .btn-secondary { border: 1px solid var(--divider); color: var(--fg-muted); background: transparent; }
+    .btn-secondary:hover { border-color: var(--amber); color: var(--amber); transform: translateY(-1px); }
 
-    .hero-desc {
-      font-size: 1.05rem;
-      color: var(--fg-muted);
-      max-width: 540px;
-      margin-top: 1.5rem;
-      margin-bottom: 3rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.65s;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.8s;
-    }
-
-    .btn {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.75rem 1.75rem;
-      border-radius: 2px;
-      text-decoration: none;
-      transition: all 0.2s;
-      display: inline-block;
-    }
-
-    .btn-primary {
-      background: var(--amber);
-      color: #1a1a1a;
-    }
-
-    .btn-primary:hover {
-      background: var(--amber-dark);
-      transform: translateY(-1px);
-    }
-
-    .btn-secondary {
-      border: 1px solid var(--divider);
-      color: var(--fg-muted);
-      background: transparent;
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--amber);
-      color: var(--amber);
-      transform: translateY(-1px);
-    }
-
-    /* FLAG STRIPE */
-    .flag-stripe {
-      width: 100%;
-      display: flex;
-      height: 5px;
-      margin-top: 4rem;
-      opacity: 0;
-      animation: fadeIn 1s ease forwards 1s;
-    }
-
+    .flag-stripe { width: 100%; display: flex; height: 5px; margin-top: 4rem; opacity: 0; animation: fadeIn 1s ease forwards 1s; }
     .stripe-light { flex: 1; background: var(--gray-light); }
     .stripe-amber { flex: 1; background: var(--amber); }
     .stripe-dark { flex: 1; background: var(--charcoal); }
 
-    /* ABOUT */
-    section {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 5rem 2rem;
-    }
+    section { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+    .section-label { font-family: 'Syne', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 1.5rem; }
 
-    .section-label {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--amber);
-      margin-bottom: 1.5rem;
-    }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-text h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1.25rem; color: var(--fg); }
+    .about-text p { font-size: 1rem; color: var(--fg-muted); line-height: 1.75; margin-bottom: 1rem; }
+    .about-visual { display: flex; flex-direction: column; gap: 1rem; }
+    .stat-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 4px; padding: 1.25rem 1.5rem; backdrop-filter: blur(8px); display: flex; align-items: baseline; gap: 0.75rem; }
+    .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--amber); }
+    .stat-label { font-size: 0.9rem; color: var(--fg-muted); }
 
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-
-    .about-text h2 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(1.8rem, 3vw, 2.5rem);
-      font-weight: 700;
-      line-height: 1.15;
-      margin-bottom: 1.25rem;
-      color: var(--fg);
-    }
-
-    .about-text p {
-      font-size: 1rem;
-      color: var(--fg-muted);
-      line-height: 1.75;
-      margin-bottom: 1rem;
-    }
-
-    .about-visual {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .stat-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 4px;
-      padding: 1.25rem 1.5rem;
-      backdrop-filter: blur(8px);
-      display: flex;
-      align-items: baseline;
-      gap: 0.75rem;
-    }
-
-    .stat-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--amber);
-    }
-
-    .stat-label {
-      font-size: 0.9rem;
-      color: var(--fg-muted);
-    }
-
-    /* LINKS GRID */
-    .links-section {
-      border-top: 1px solid var(--divider);
-    }
-
-    .links-grid {
-      display: flex;
-      flex-direction: column;
-      border: 1px solid var(--divider);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .links-row {
-      display: flex;
-      border-bottom: 1px solid var(--divider);
-    }
-
-    .links-row:last-child {
-      border-bottom: none;
-      justify-content: unset;
-    }
-
-    .link-card {
-      background: var(--card-bg);
-      padding: 2rem;
-      text-decoration: none;
-      color: var(--fg);
-      transition: background 0.2s;
-      display: block;
-      flex: 1;
-      border-right: 1px solid var(--divider);
-    }
-
-    .link-card:last-child {
-      border-right: none;
-    }
-
-    .links-row:last-child .link-card {
-      flex: 1;
-    }
-
-    @media (max-width: 768px) {
-      .links-row { flex-direction: column; }
-      .link-card { border-right: none; border-bottom: 1px solid var(--divider); }
-      .link-card:last-child { border-bottom: none; }
-    }
-
-    .link-card:hover {
-      background: var(--amber-muted);
-    }
-
+    .links-section { border-top: 1px solid var(--divider); }
+    .links-grid { display: flex; flex-direction: column; border: 1px solid var(--divider); border-radius: 4px; overflow: hidden; }
+    .links-row { display: flex; border-bottom: 1px solid var(--divider); }
+    .links-row:last-child { border-bottom: none; }
+    .link-card { background: var(--card-bg); padding: 2rem; text-decoration: none; color: var(--fg); transition: background 0.2s; display: block; flex: 1; border-right: 1px solid var(--divider); }
+    .link-card:last-child { border-right: none; }
+    .link-card:hover { background: var(--amber-muted); }
     .link-card:hover .link-arrow { transform: translate(3px, -3px); }
+    .link-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+    .link-icon { font-size: 1.5rem; }
+    .link-arrow { font-size: 1rem; color: var(--fg-subtle); transition: transform 0.2s; }
+    .link-title { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--fg); }
+    .link-desc { font-size: 0.85rem; color: var(--fg-muted); line-height: 1.5; }
 
-    .link-card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1rem;
-    }
-
-    .link-icon {
-      font-size: 1.5rem;
-    }
-
-    .link-arrow {
-      font-size: 1rem;
-      color: var(--fg-subtle);
-      transition: transform 0.2s;
-    }
-
-    .link-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
-      color: var(--fg);
-    }
-
-    .link-desc {
-      font-size: 0.85rem;
-      color: var(--fg-muted);
-      line-height: 1.5;
-    }
-
-    /* ANNOUNCEMENTS */
-    .announcements-section {
-      border-top: 1px solid var(--divider);
-    }
-
-    .announcements-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 2rem;
-    }
-
-    .announcements-header h2 {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-
-    .see-all {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--amber);
-      text-decoration: none;
-    }
-
+    .announcements-section { border-top: 1px solid var(--divider); }
+    .announcements-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; }
+    .announcements-header h2 { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; }
+    .see-all { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); text-decoration: none; }
     .see-all:hover { text-decoration: underline; }
-
-    .announcement-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      border: 1px solid var(--divider);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .announcement-item {
-      padding: 1.5rem;
-      border-bottom: 1px solid var(--divider);
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 1.5rem;
-      align-items: start;
-      text-decoration: none;
-      color: var(--fg);
-      background: var(--card-bg);
-      transition: background 0.2s;
-    }
-
+    .announcement-list { display: flex; flex-direction: column; border: 1px solid var(--divider); border-radius: 4px; overflow: hidden; }
+    .announcement-item { padding: 1.5rem; border-bottom: 1px solid var(--divider); display: grid; grid-template-columns: auto 1fr; gap: 1.5rem; align-items: start; text-decoration: none; color: var(--fg); background: var(--card-bg); transition: background 0.2s; }
     .announcement-item:last-child { border-bottom: none; }
     .announcement-item:hover { background: var(--amber-muted); }
+    .announcement-date { font-family: 'Syne', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-subtle); width: 60px; padding-top: 0.15rem; }
+    .announcement-title { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; color: var(--fg); }
+    .announcement-preview { font-size: 0.88rem; color: var(--fg-muted); line-height: 1.5; }
+    .announcements-loading { padding: 2rem; text-align: center; color: var(--fg-subtle); font-family: 'Syne', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
 
-    .announcement-date {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--fg-subtle);
-      width: 60px;
-      padding-top: 0.15rem;
-    }
+    footer { border-top: 1px solid var(--divider); padding: 2rem; max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-left { font-family: 'Syne', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-subtle); }
+    .footer-right { font-size: 0.82rem; color: var(--fg-subtle); font-style: italic; }
 
-    .announcement-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-      color: var(--fg);
-    }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    .announcement-preview {
-      font-size: 0.88rem;
-      color: var(--fg-muted);
-      line-height: 1.5;
-    }
-
-    /* FOOTER */
-    footer {
-      border-top: 1px solid var(--divider);
-      padding: 2rem;
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .footer-left {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--fg-subtle);
-    }
-
-    .footer-right {
-      font-size: 0.82rem;
-      color: var(--fg-subtle);
-      font-style: italic;
-    }
-
-    /* ANIMATIONS */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    /* RESPONSIVE */
     @media (max-width: 768px) {
       .about-grid { grid-template-columns: 1fr; gap: 2rem; }
       .nav-links { display: none; }
+      .links-row { flex-direction: column; }
+      .link-card { border-right: none; border-bottom: 1px solid var(--divider); }
+      .link-card:last-child { border-bottom: none; }
       .announcements-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
       footer { flex-direction: column; align-items: flex-start; }
     }
@@ -508,16 +122,16 @@
 <body>
 
   <nav>
-    <a href="/" class="nav-logo">
+    <a href="./index.html" class="nav-logo">
       <span class="dot"></span>
       Êdōâma dâ Enêoķe
     </a>
     <ul class="nav-links">
       <li><a href="./êde.pdf">Docs</a></li>
       <li><a href="./dictionary/index.html">Dictionary</a></li>
-
-      <li><a href="/archive">Archive</a></li>
-      <li><a href="/downloads">Downloads</a></li>
+      <li><a href="./archive/index.html">Archive</a></li>
+      <li><a href="./downloads/index.html">Downloads</a></li>
+      <li><a href="./announcements/index.html">Announcements</a></li>
     </ul>
   </nav>
 
@@ -535,7 +149,7 @@
         This is its official resource hub — documentation, dictionary, learning materials, and more.
       </p>
       <div class="hero-actions">
-        <a href="/archive" class="btn btn-primary">See the Archives</a>
+        <a href="./archive/index.html" class="btn btn-primary">See the Archives</a>
         <a href="./êde.pdf" class="btn btn-secondary">Read the Docs</a>
       </div>
       <div class="flag-stripe">
@@ -545,40 +159,22 @@
       </div>
     </div>
 
-    <!-- ABOUT -->
     <section class="about-section">
       <p class="section-label">About</p>
       <div class="about-grid">
         <div class="about-text">
           <h2>Small language.<br />Big ambitions.</h2>
-          <p>
-            Êde is a constructed language using Latin characters with diacritics to mark sound changes.
-            It follows SVO sentence structure and features a productive system of prefixes and suffixes
-            for deriving new words from existing roots.
-          </p>
-          <p>
-            The language is actively developed — new words, grammar rules, and community resources
-            are added regularly. Anyone is welcome to learn, contribute, and use it.
-          </p>
+          <p>Êde is a constructed language using Latin characters with diacritics to mark sound changes. It follows SVO sentence structure and features a productive system of prefixes and suffixes for deriving new words from existing roots.</p>
+          <p>The language is actively developed — new words, grammar rules, and community resources are added regularly. Anyone is welcome to learn, contribute, and use it.</p>
         </div>
         <div class="about-visual">
-          <div class="stat-card">
-            <span class="stat-num">250+</span>
-            <span class="stat-label">dictionary entries</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-num">4</span>
-            <span class="stat-label">active community departments</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-num">2026</span>
-            <span class="stat-label">year of the Great Reform</span>
-          </div>
+          <div class="stat-card"><span class="stat-num">250+</span><span class="stat-label">dictionary entries</span></div>
+          <div class="stat-card"><span class="stat-num">4</span><span class="stat-label">active community departments</span></div>
+          <div class="stat-card"><span class="stat-num">2026</span><span class="stat-label">year of the Great Reform</span></div>
         </div>
       </div>
     </section>
 
-    <!-- QUICK LINKS -->
     <section class="links-section">
       <p class="section-label">Resources</p>
       <div class="links-grid">
@@ -597,14 +193,14 @@
           </a>
         </div>
         <div class="links-row">
-          <a href="/archive" class="link-card">
+          <a href="./archive/index.html" class="link-card">
             <div class="link-card-top"><span class="link-icon">🗂️</span><span class="link-arrow">↗</span></div>
             <div class="link-title">Archive</div>
             <div class="link-desc">Community literature, translations, art, and lexicon submissions.</div>
           </a>
         </div>
         <div class="links-row">
-          <a href="/downloads" class="link-card">
+          <a href="./downloads/index.html" class="link-card">
             <div class="link-card-top"><span class="link-icon">⬇️</span><span class="link-arrow">↗</span></div>
             <div class="link-title">Downloads</div>
             <div class="link-desc">Official documents, reference sheets, and printable materials.</div>
@@ -620,23 +216,16 @@
       </div>
     </section>
 
-    <!-- ANNOUNCEMENTS -->
     <section class="announcements-section">
       <div class="announcements-header">
         <div>
           <p class="section-label">Latest</p>
           <h2>Announcements</h2>
         </div>
-        <a href="/announcements" class="see-all">See all →</a>
+        <a href="./announcements/index.html" class="see-all">See all →</a>
       </div>
-      <div class="announcement-list">
-        <a href="#" class="announcement-item">
-          <span class="announcement-date">March 11</span>
-          <div>
-            <div class="announcement-title">Server now on Disboard</div>
-            <div class="announcement-preview">The official Discord server is now listed on Disboard! Do not forget to rate it!</div>
-          </div>
-        </a>
+      <div class="announcement-list" id="announcement-list">
+        <div class="announcements-loading">Loading…</div>
       </div>
     </section>
   </main>
@@ -645,6 +234,55 @@
     <span class="footer-left">Êdōâma dâ Enêoķe · edoamalang.github.io</span>
     <span class="footer-right">created by Nôu F. · language of raccoons</span>
   </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCoh1oS6Vce5juV_wk7BEcGuFhwwA8TqgE",
+      authDomain: "ede-archive.firebaseapp.com",
+      projectId: "ede-archive",
+      storageBucket: "ede-archive.firebasestorage.app",
+      messagingSenderId: "813368382578",
+      appId: "1:813368382578:web:1261ad9ca88c6d8f595eeb",
+      measurementId: "G-87XMLVY3B7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadAnnouncements() {
+      const list = document.getElementById("announcement-list");
+      try {
+        const q = query(collection(db, "announcements"), orderBy("datePosted", "desc"), limit(3));
+        const snap = await getDocs(q);
+        const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+        if (items.length === 0) {
+          list.innerHTML = '<div class="announcements-loading">No announcements yet.</div>';
+          return;
+        }
+
+        list.innerHTML = items.map(a => {
+          const date = a.datePosted?.toDate?.() ?? new Date();
+          const dateStr = date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+          return `
+            <a class="announcement-item" href="./announcements/post.html?id=${a.id}">
+              <span class="announcement-date">${dateStr}</span>
+              <div>
+                <div class="announcement-title">${a.title}</div>
+                <div class="announcement-preview">${a.preview}</div>
+              </div>
+            </a>`;
+        }).join("");
+      } catch (err) {
+        list.innerHTML = '<div class="announcements-loading">Could not load announcements.</div>';
+      }
+    }
+
+    loadAnnouncements();
+  </script>
 
 </body>
 </html>
