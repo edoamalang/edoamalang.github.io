@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Archive — Êdōâma dâ Enêoķe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gray-light: #C8C8C8;
+      --amber: #D4A96A;
+      --charcoal: #555555;
+      --amber-dark: #b8894a;
+      --amber-muted: rgba(212, 169, 106, 0.12);
+      --bg: #f5f3ef;
+      --fg: #1a1a1a;
+      --fg-muted: #666;
+      --fg-subtle: #999;
+      --card-bg: rgba(255,255,255,0.8);
+      --card-border: rgba(0,0,0,0.08);
+      --nav-bg: rgba(245, 243, 239, 0.92);
+      --divider: rgba(0,0,0,0.1);
+      --input-bg: #fff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1e1d1b;
+        --fg: #e8e4dc;
+        --fg-muted: #aaa;
+        --fg-subtle: #666;
+        --card-bg: rgba(40,38,34,0.8);
+        --card-border: rgba(255,255,255,0.08);
+        --nav-bg: rgba(30,29,27,0.92);
+        --divider: rgba(255,255,255,0.08);
+        --input-bg: #2a2825;
+      }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Newsreader', Georgia, serif; background: var(--bg); color: var(--fg); line-height: 1.6; overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--nav-bg); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--divider);
+      padding: 0 2rem; height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    .nav-logo .dot { width: 8px; height: 8px; background: var(--amber); border-radius: 50%; display: inline-block; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--amber); }
+
+    .page-header { padding: 7rem 2rem 2rem; max-width: 1100px; margin: 0 auto; }
+    .page-eyebrow { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.75rem; }
+    .page-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1; margin-bottom: 1rem; }
+    .page-desc { font-size: 1rem; color: var(--fg-muted); max-width: 500px; margin-bottom: 1.5rem; }
+
+    .submit-btn {
+      font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.65rem 1.5rem; border-radius: 2px;
+      background: var(--amber); color: #1a1a1a;
+      text-decoration: none; display: inline-block;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .submit-btn:hover { background: var(--amber-dark); transform: translateY(-1px); }
+
+    .controls { max-width: 1100px; margin: 0 auto; padding: 0 2rem 2rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+
+    .search-wrap { flex: 1; min-width: 200px; position: relative; }
+    .search-wrap input {
+      width: 100%; padding: 0.65rem 1rem 0.65rem 2.5rem;
+      background: var(--input-bg); border: 1px solid var(--card-border);
+      border-radius: 2px; font-family: 'Newsreader', serif; font-size: 0.95rem;
+      color: var(--fg); outline: none; transition: border-color 0.2s;
+    }
+    .search-wrap input:focus { border-color: var(--amber); }
+    .search-icon { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--fg-subtle); font-size: 0.9rem; }
+
+    .filter-select {
+      padding: 0.65rem 1rem; background: var(--input-bg);
+      border: 1px solid var(--card-border); border-radius: 2px;
+      font-family: 'Syne', sans-serif; font-size: 0.78rem;
+      font-weight: 500; color: var(--fg-muted); outline: none;
+      cursor: pointer; transition: border-color 0.2s;
+    }
+    .filter-select:focus { border-color: var(--amber); }
+
+    .results-count { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-subtle); padding: 0 2rem 1rem; max-width: 1100px; margin: 0 auto; }
+
+    .archive-grid { max-width: 1100px; margin: 0 auto; padding: 0 2rem 4rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; background: var(--divider); border: 1px solid var(--divider); border-radius: 4px; overflow: hidden; }
+
+    .entry-card { background: var(--card-bg); padding: 1.75rem; transition: background 0.2s; cursor: pointer; }
+    .entry-card:hover { background: var(--amber-muted); }
+
+    .entry-type { font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.5rem; }
+    .entry-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; color: var(--fg); }
+    .entry-author { font-size: 0.85rem; color: var(--fg-muted); font-style: italic; margin-bottom: 0.75rem; }
+    .entry-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem; }
+    .tag { font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; padding: 0.2rem 0.5rem; background: var(--amber-muted); border: 1px solid rgba(212,169,106,0.3); border-radius: 2px; color: var(--fg-muted); }
+    .entry-date { font-family: 'Syne', sans-serif; font-size: 0.65rem; color: var(--fg-subtle); letter-spacing: 0.08em; }
+    .entry-link { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); text-decoration: none; display: inline-block; margin-top: 0.5rem; }
+    .entry-link:hover { text-decoration: underline; }
+
+    .empty-state { grid-column: 1 / -1; padding: 4rem 2rem; text-align: center; color: var(--fg-subtle); font-style: italic; }
+
+    .loading { grid-column: 1 / -1; padding: 4rem 2rem; text-align: center; color: var(--fg-subtle); font-family: 'Syne', sans-serif; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    footer { border-top: 1px solid var(--divider); padding: 2rem; max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-left { font-family: 'Syne', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-subtle); }
+    .footer-right { font-size: 0.82rem; color: var(--fg-subtle); font-style: italic; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .archive-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-logo"><span class="dot"></span>Êdōâma dâ Enêoķe</a>
+    <ul class="nav-links">
+      <li><a href="/docs">Docs</a></li>
+      <li><a href="../dictionary/index.html">Dictionary</a></li>
+      <li><a href="index.html" class="active">Archive</a></li>
+      <li><a href="/downloads">Downloads</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <p class="page-eyebrow">Community Archive</p>
+    <h1 class="page-title">Neld dâ Enêoķe</h1>
+    <p class="page-desc">A living collection of community-created literature, translations, art, and lexicon contributions.</p>
+    <a href="submit.html" class="submit-btn">Submit a Work</a>
+  </div>
+
+  <div class="controls">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search" placeholder="Search by title, author, or tag…" />
+    </div>
+    <select class="filter-select" id="filter-type">
+      <option value="">All Types</option>
+      <option value="literature">Literature</option>
+      <option value="translation">Translation</option>
+      <option value="art">Art</option>
+      <option value="lexicon">Lexicon</option>
+    </select>
+    <select class="filter-select" id="filter-lang">
+      <option value="">All Languages</option>
+      <option value="ede">Êde</option>
+      <option value="english">English</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+
+  <p class="results-count" id="results-count">Loading…</p>
+  <div class="archive-grid" id="archive-grid">
+    <div class="loading">Loading archive…</div>
+  </div>
+
+  <footer>
+    <span class="footer-left">Êdōâma dâ Enêoķe · Archive</span>
+    <span class="footer-right">created by Nôu F. · language of raccoons</span>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getFirestore, collection, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCoh1oS6Vce5juV_wk7BEcGuFhwwA8TqgE",
+      authDomain: "ede-archive.firebaseapp.com",
+      projectId: "ede-archive",
+      storageBucket: "ede-archive.firebasestorage.app",
+      messagingSenderId: "813368382578",
+      appId: "1:813368382578:web:1261ad9ca88c6d8f595eeb",
+      measurementId: "G-87XMLVY3B7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let allEntries = [];
+
+    async function loadArchive() {
+      const q = query(collection(db, "archive"), where("status", "==", "approved"), orderBy("dateSubmitted", "desc"));
+      const snap = await getDocs(q);
+      allEntries = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderEntries(allEntries);
+    }
+
+    function renderEntries(entries) {
+      const grid = document.getElementById("archive-grid");
+      const count = document.getElementById("results-count");
+      count.textContent = `${entries.length} entr${entries.length === 1 ? "y" : "ies"}`;
+
+      if (entries.length === 0) {
+        grid.innerHTML = '<div class="empty-state">No entries found.</div>';
+        return;
+      }
+
+      grid.innerHTML = entries.map(e => {
+        const date = e.dateSubmitted?.toDate?.() ?? new Date(e.dateSubmitted);
+        const dateStr = date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+        const tags = (e.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
+        const langs = (e.languages || []).map(l => `<span class="tag">${l}</span>`).join("");
+        const contentLink = e.contentUrl
+          ? `<a class="entry-link" href="${e.contentUrl}" target="_blank" rel="noopener">View →</a>`
+          : e.fileUrl
+          ? `<a class="entry-link" href="${e.fileUrl}" target="_blank" rel="noopener">Download →</a>`
+          : "";
+        return `
+          <div class="entry-card">
+            <div class="entry-type">${e.contentType || "—"}</div>
+            <div class="entry-title">${e.title}</div>
+            <div class="entry-author">by ${e.author}</div>
+            <div class="entry-meta">${langs}${tags}</div>
+            <div class="entry-date">${dateStr}</div>
+            ${contentLink}
+          </div>`;
+      }).join("");
+    }
+
+    function filterEntries() {
+      const search = document.getElementById("search").value.toLowerCase();
+      const type = document.getElementById("filter-type").value;
+      const lang = document.getElementById("filter-lang").value;
+
+      const filtered = allEntries.filter(e => {
+        const matchSearch = !search ||
+          e.title?.toLowerCase().includes(search) ||
+          e.author?.toLowerCase().includes(search) ||
+          (e.tags || []).some(t => t.toLowerCase().includes(search));
+        const matchType = !type || e.contentType === type;
+        const matchLang = !lang || (e.languages || []).includes(lang);
+        return matchSearch && matchType && matchLang;
+      });
+
+      renderEntries(filtered);
+    }
+
+    document.getElementById("search").addEventListener("input", filterEntries);
+    document.getElementById("filter-type").addEventListener("change", filterEntries);
+    document.getElementById("filter-lang").addEventListener("change", filterEntries);
+
+    loadArchive();
+  </script>
+</body>
+</html>
