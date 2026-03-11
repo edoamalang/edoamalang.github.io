@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Archive — Êdōâma dâ Enêoķe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --amber: #D4A96A; --amber-dark: #b8894a; --amber-muted: rgba(212,169,106,0.12);
+      --bg: #1e1d1b; --fg: #e8e4dc; --fg-muted: #aaa; --fg-subtle: #666;
+      --card-bg: rgba(40,38,34,0.9); --card-border: rgba(255,255,255,0.08);
+      --nav-bg: rgba(30,29,27,0.95); --divider: rgba(255,255,255,0.08);
+      --input-bg: #2a2825; --green: #4caf50; --red: #ef5350;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Newsreader', Georgia, serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--nav-bg); border-bottom: 1px solid var(--divider); padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
+    .nav-logo .dot { width: 8px; height: 8px; background: var(--amber); border-radius: 50%; }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .user-info { font-family: 'Syne', sans-serif; font-size: 0.75rem; color: var(--fg-muted); }
+    .sign-out-btn { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: none; border: 1px solid var(--divider); color: var(--fg-muted); padding: 0.3rem 0.75rem; border-radius: 2px; cursor: pointer; transition: all 0.2s; }
+    .sign-out-btn:hover { border-color: var(--amber); color: var(--amber); }
+
+    #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 1rem; padding: 2rem; }
+    .login-title { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; }
+    .login-desc { font-size: 0.9rem; color: var(--fg-muted); }
+    .google-btn { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 2px; cursor: pointer; font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--fg); transition: border-color 0.2s; }
+    .google-btn:hover { border-color: var(--amber); }
+
+    #admin-screen { display: none; padding: 5rem 2rem 4rem; max-width: 1000px; margin: 0 auto; }
+    .page-header { margin-bottom: 2rem; }
+    .page-eyebrow { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.5rem; }
+    .page-title { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; }
+
+    .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--divider); margin-bottom: 1.5rem; }
+    .tab-btn { font-family: 'Syne', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.65rem 1.25rem; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; color: var(--fg-muted); transition: all 0.2s; margin-bottom: -1px; }
+    .tab-btn.active { color: var(--amber); border-bottom-color: var(--amber); }
+
+    .submission-list { display: flex; flex-direction: column; gap: 1px; background: var(--divider); border: 1px solid var(--divider); border-radius: 4px; overflow: hidden; }
+    .submission-card { background: var(--card-bg); padding: 1.5rem; display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start; }
+    .sub-type { font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.25rem; }
+    .sub-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .sub-author { font-size: 0.85rem; color: var(--fg-muted); font-style: italic; margin-bottom: 0.5rem; }
+    .sub-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.5rem; }
+    .tag { font-family: 'Syne', sans-serif; font-size: 0.65rem; padding: 0.2rem 0.5rem; background: var(--amber-muted); border: 1px solid rgba(212,169,106,0.3); border-radius: 2px; color: var(--fg-muted); }
+    .sub-link { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--amber); text-decoration: none; }
+    .sub-link:hover { text-decoration: underline; }
+    .sub-date { font-family: 'Syne', sans-serif; font-size: 0.65rem; color: var(--fg-subtle); }
+    .sub-actions { display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-end; }
+    .approve-btn, .reject-btn { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 1rem; border: none; border-radius: 2px; cursor: pointer; transition: opacity 0.2s; white-space: nowrap; }
+    .approve-btn { background: var(--green); color: #fff; }
+    .reject-btn { background: var(--red); color: #fff; }
+    .approve-btn:hover, .reject-btn:hover { opacity: 0.85; }
+    .approve-btn:disabled, .reject-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .status-badge { font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.6rem; border-radius: 2px; }
+    .status-badge.approved { background: rgba(76,175,80,0.15); color: var(--green); border: 1px solid rgba(76,175,80,0.3); }
+    .status-badge.rejected { background: rgba(239,83,80,0.15); color: var(--red); border: 1px solid rgba(239,83,80,0.3); }
+
+    .empty { padding: 3rem; text-align: center; color: var(--fg-subtle); font-style: italic; }
+    .loading { padding: 3rem; text-align: center; color: var(--fg-subtle); font-family: 'Syne', sans-serif; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .error-msg { padding: 1rem; background: rgba(239,83,80,0.1); border: 1px solid rgba(239,83,80,0.3); border-radius: 2px; color: var(--red); font-family: 'Syne', sans-serif; font-size: 0.8rem; margin-bottom: 1rem; display: none; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-logo"><span class="dot"></span>Archive Admin</a>
+    <div class="nav-right">
+      <span class="user-info" id="user-info"></span>
+      <button class="sign-out-btn" id="sign-out-btn" style="display:none">Sign Out</button>
+    </div>
+  </nav>
+
+  <div id="login-screen">
+    <p class="login-title">Archive Admin</p>
+    <p class="login-desc">Sign in with your authorized Google account to review submissions.</p>
+    <button class="google-btn" id="google-login-btn">
+      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
+      Sign in with Google
+    </button>
+  </div>
+
+  <div class="error-msg" id="error-msg" style="max-width:400px;margin:1rem auto 0;"></div>
+
+  <div id="admin-screen">
+    <div class="page-header">
+      <p class="page-eyebrow">Admin Panel</p>
+      <h1 class="page-title">Submission Review</h1>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="pending">Pending</button>
+      <button class="tab-btn" data-tab="approved">Approved</button>
+      <button class="tab-btn" data-tab="rejected">Rejected</button>
+    </div>
+    <div class="submission-list" id="submission-list">
+      <div class="loading">Loading…</div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getFirestore, collection, query, where, orderBy, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCoh1oS6Vce5juV_wk7BEcGuFhwwA8TqgE",
+      authDomain: "ede-archive.firebaseapp.com",
+      projectId: "ede-archive",
+      storageBucket: "ede-archive.firebasestorage.app",
+      messagingSenderId: "813368382578",
+      appId: "1:813368382578:web:1261ad9ca88c6d8f595eeb",
+      measurementId: "G-87XMLVY3B7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    // =============================================
+    // ALLOWED ADMIN EMAILS — add/remove as needed
+    const ALLOWED_EMAILS = [
+      "noahhfountainn@gmail.com",
+      // "another@gmail.com",
+    ];
+    // =============================================
+
+    let currentTab = "pending";
+    let accessDenied = false;
+
+    // Auth state
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        if (!ALLOWED_EMAILS.includes(user.email)) {
+          accessDenied = true;
+          signOut(auth);
+          return;
+        }
+        accessDenied = false;
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("admin-screen").style.display = "block";
+        document.getElementById("user-info").textContent = user.email;
+        document.getElementById("sign-out-btn").style.display = "block";
+        loadSubmissions(currentTab);
+      } else {
+        document.getElementById("login-screen").style.display = "flex";
+        document.getElementById("admin-screen").style.display = "none";
+        document.getElementById("sign-out-btn").style.display = "none";
+        if (accessDenied) {
+          const errEl = document.getElementById("error-msg");
+          errEl.textContent = "Access denied — your account is not authorized.";
+          errEl.style.display = "block";
+        }
+      }
+    });
+
+    document.getElementById("google-login-btn").addEventListener("click", async () => {
+      const errEl = document.getElementById("error-msg");
+      errEl.style.display = "none";
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        if (err.code !== "auth/popup-closed-by-user" && err.code !== "auth/cancelled-popup-request") {
+          errEl.textContent = `Sign-in error: ${err.message}`;
+          errEl.style.display = "block";
+        }
+      }
+    });
+
+    document.getElementById("sign-out-btn").addEventListener("click", () => signOut(auth));
+
+    // Tabs
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentTab = btn.dataset.tab;
+        loadSubmissions(currentTab);
+      });
+    });
+
+    async function loadSubmissions(status) {
+      const list = document.getElementById("submission-list");
+      list.innerHTML = '<div class="loading">Loading…</div>';
+      try {
+        const q = query(collection(db, "archive"), where("status", "==", status), orderBy("dateSubmitted", "desc"));
+        const snap = await getDocs(q);
+        const entries = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderSubmissions(entries, status);
+      } catch (err) {
+        const errEl = document.getElementById("error-msg");
+        errEl.textContent = `Failed to load: ${err.message}`;
+        errEl.style.display = "block";
+        list.innerHTML = "";
+      }
+    }
+
+    function renderSubmissions(entries, status) {
+      const list = document.getElementById("submission-list");
+      if (entries.length === 0) { list.innerHTML = `<div class="empty">No ${status} submissions.</div>`; return; }
+
+      list.innerHTML = entries.map(e => {
+        const date = e.dateSubmitted?.toDate?.() ?? new Date();
+        const dateStr = date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+        const tags = (e.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
+        const langs = (e.languages || []).map(l => `<span class="tag">${l}</span>`).join("");
+        const contentLink = e.contentUrl
+          ? `<a class="sub-link" href="${e.contentUrl}" target="_blank">View content ↗</a>`
+          : e.fileUrl
+          ? `<a class="sub-link" href="${e.fileUrl}" target="_blank">Download file ↗</a>`
+          : "<span style='color:var(--fg-subtle);font-size:0.8rem'>No content attached</span>";
+
+        const actions = status === "pending"
+          ? `<button class="approve-btn" data-id="${e.id}">Approve</button><button class="reject-btn" data-id="${e.id}">Reject</button>`
+          : `<span class="status-badge ${status}">${status}</span>`;
+
+        return `
+          <div class="submission-card" id="card-${e.id}">
+            <div>
+              <div class="sub-type">${e.contentType || "—"}</div>
+              <div class="sub-title">${e.title}</div>
+              <div class="sub-author">by ${e.author}</div>
+              <div class="sub-meta">${langs}${tags}</div>
+              ${contentLink}
+              <div class="sub-date" style="margin-top:0.5rem">${dateStr}</div>
+            </div>
+            <div class="sub-actions">${actions}</div>
+          </div>`;
+      }).join("");
+
+      // Bind action buttons
+      list.querySelectorAll(".approve-btn").forEach(btn => {
+        btn.addEventListener("click", () => updateStatus(btn.dataset.id, "approved"));
+      });
+      list.querySelectorAll(".reject-btn").forEach(btn => {
+        btn.addEventListener("click", () => updateStatus(btn.dataset.id, "rejected"));
+      });
+    }
+
+    async function updateStatus(id, status) {
+      const card = document.getElementById(`card-${id}`);
+      const btns = card.querySelectorAll("button");
+      btns.forEach(b => b.disabled = true);
+      try {
+        await updateDoc(doc(db, "archive", id), { status });
+        card.style.opacity = "0.4";
+        setTimeout(() => card.remove(), 600);
+      } catch (err) {
+        btns.forEach(b => b.disabled = false);
+        alert(`Error: ${err.message}`);
+      }
+    }
+  </script>
+</body>
+</html>
