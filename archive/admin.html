@@ -86,12 +86,13 @@
     </button>
   </div>
 
+  <div class="error-msg" id="error-msg" style="max-width:400px;margin:1rem auto 0;"></div>
+
   <div id="admin-screen">
     <div class="page-header">
       <p class="page-eyebrow">Admin Panel</p>
       <h1 class="page-title">Submission Review</h1>
     </div>
-    <div class="error-msg" id="error-msg"></div>
     <div class="tabs">
       <button class="tab-btn active" data-tab="pending">Pending</button>
       <button class="tab-btn" data-tab="approved">Approved</button>
@@ -131,6 +132,7 @@
     // =============================================
 
     let currentTab = "pending";
+    let accessDenied = false;
 
     // Handle redirect result on page load
     getRedirectResult(auth).catch(err => {
@@ -145,12 +147,11 @@
     onAuthStateChanged(auth, user => {
       if (user) {
         if (!ALLOWED_EMAILS.includes(user.email)) {
+          accessDenied = true;
           signOut(auth);
-          const errEl = document.getElementById("error-msg");
-          errEl.textContent = "Access denied — your account is not authorized.";
-          errEl.style.display = "block";
           return;
         }
+        accessDenied = false;
         document.getElementById("login-screen").style.display = "none";
         document.getElementById("admin-screen").style.display = "block";
         document.getElementById("user-info").textContent = user.email;
@@ -160,6 +161,11 @@
         document.getElementById("login-screen").style.display = "flex";
         document.getElementById("admin-screen").style.display = "none";
         document.getElementById("sign-out-btn").style.display = "none";
+        if (accessDenied) {
+          const errEl = document.getElementById("error-msg");
+          errEl.textContent = "Access denied — your account is not authorized.";
+          errEl.style.display = "block";
+        }
       }
     });
 
