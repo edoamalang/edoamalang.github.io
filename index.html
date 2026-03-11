@@ -298,13 +298,21 @@
     }
 
     .links-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1px;
-      background: var(--divider);
+      display: flex;
+      flex-direction: column;
       border: 1px solid var(--divider);
       border-radius: 4px;
       overflow: hidden;
+    }
+
+    .links-row {
+      display: flex;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .links-row:last-child {
+      border-bottom: none;
+      justify-content: unset;
     }
 
     .link-card {
@@ -314,6 +322,22 @@
       color: var(--fg);
       transition: background 0.2s;
       display: block;
+      flex: 1;
+      border-right: 1px solid var(--divider);
+    }
+
+    .link-card:last-child {
+      border-right: none;
+    }
+
+    .links-row:last-child .link-card {
+      flex: 1;
+    }
+
+    @media (max-width: 768px) {
+      .links-row { flex-direction: column; }
+      .link-card { border-right: none; border-bottom: 1px solid var(--divider); }
+      .link-card:last-child { border-bottom: none; }
     }
 
     .link-card:hover {
@@ -490,8 +514,8 @@
     </a>
     <ul class="nav-links">
       <li><a href="/docs">Docs</a></li>
-      <li><a href="/dictionary">Dictionary</a></li>
-      <li><a href="/learn">Learn</a></li>
+      <li><a href="./dictionary/index.html">Dictionary</a></li>
+
       <li><a href="/archive">Archive</a></li>
       <li><a href="/downloads">Downloads</a></li>
     </ul>
@@ -558,54 +582,41 @@
     <section class="links-section">
       <p class="section-label">Resources</p>
       <div class="links-grid">
-        <a href="/docs" class="link-card">
-          <div class="link-card-top">
-            <span class="link-icon">📖</span>
-            <span class="link-arrow">↗</span>
-          </div>
-          <div class="link-title">Documentation</div>
-          <div class="link-desc">Grammar rules, phonology, sentence structure, and derivation.</div>
-        </a>
-        <a href="/dictionary" class="link-card">
-          <div class="link-card-top">
-            <span class="link-icon">🔤</span>
-            <span class="link-arrow">↗</span>
-          </div>
-          <div class="link-title">Dictionary</div>
-          <div class="link-desc">Searchable reference of all standardized êde vocabulary.</div>
-        </a>
-        <a href="/learn" class="link-card">
-          <div class="link-card-top">
-            <span class="link-icon">🦝</span>
-            <span class="link-arrow">↗</span>
-          </div>
-          <div class="link-title">Learning Path</div>
-          <div class="link-desc">Structured lessons for beginners through to fluency.</div>
-        </a>
-        <a href="/archive" class="link-card">
-          <div class="link-card-top">
-            <span class="link-icon">🗂️</span>
-            <span class="link-arrow">↗</span>
-          </div>
-          <div class="link-title">Archive</div>
-          <div class="link-desc">Community literature, translations, art, and lexicon submissions.</div>
-        </a>
-        <a href="/downloads" class="link-card">
-          <div class="link-card-top">
-            <span class="link-icon">⬇️</span>
-            <span class="link-arrow">↗</span>
-          </div>
-          <div class="link-title">Downloads</div>
-          <div class="link-desc">Official documents, reference sheets, and printable materials.</div>
-        </a>
-        <a href="https://discord.gg/placeholder" class="link-card">
-          <div class="link-card-top">
-            <span class="link-icon">💬</span>
-            <span class="link-arrow">↗</span>
-          </div>
-          <div class="link-title">Community</div>
-          <div class="link-desc">Join the Discord server to learn, discuss, and contribute.</div>
-        </a>
+        <div class="links-row">
+          <a href="/docs" class="link-card">
+            <div class="link-card-top"><span class="link-icon">📖</span><span class="link-arrow">↗</span></div>
+            <div class="link-title">Documentation</div>
+            <div class="link-desc">Grammar rules, phonology, sentence structure, and derivation.</div>
+          </a>
+        </div>
+        <div class="links-row">
+          <a href="./dictionary/index.html" class="link-card">
+            <div class="link-card-top"><span class="link-icon">🔤</span><span class="link-arrow">↗</span></div>
+            <div class="link-title">Dictionary</div>
+            <div class="link-desc">Searchable reference of all standardized êde vocabulary.</div>
+          </a>
+        </div>
+        <div class="links-row">
+          <a href="/archive" class="link-card">
+            <div class="link-card-top"><span class="link-icon">🗂️</span><span class="link-arrow">↗</span></div>
+            <div class="link-title">Archive</div>
+            <div class="link-desc">Community literature, translations, art, and lexicon submissions.</div>
+          </a>
+        </div>
+        <div class="links-row">
+          <a href="/downloads" class="link-card">
+            <div class="link-card-top"><span class="link-icon">⬇️</span><span class="link-arrow">↗</span></div>
+            <div class="link-title">Downloads</div>
+            <div class="link-desc">Official documents, reference sheets, and printable materials.</div>
+          </a>
+        </div>
+        <div class="links-row">
+          <a href="https://discord.gg/placeholder" class="link-card">
+            <div class="link-card-top"><span class="link-icon">💬</span><span class="link-arrow">↗</span></div>
+            <div class="link-title">Community</div>
+            <div class="link-desc">Join the Discord server to learn, discuss, and contribute.</div>
+          </a>
+        </div>
       </div>
     </section>
 
