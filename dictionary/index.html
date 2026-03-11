@@ -174,7 +174,8 @@
     function normalize(str) {
       return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
                 .replace(/ķ/g, 'k').replace(/ż/g, 'z').replace(/ģ/g, 'g')
-                .replace(/ž/g, 'z').replace(/ǩ/g, 'k').replace(/â/g, 'a');
+                .replace(/ž/g, 'z').replace(/ǩ/g, 'k').replace(/â/g, 'a')
+                .replace(/þ/g, 'th').replace(/ņ/g, 'n').replace(/ā/g, 'a');
     }
 
     async function loadDictionary() {
