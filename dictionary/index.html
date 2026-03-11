@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <img src="flag.png" alt="êde flag" class="flag-icon">
+    <title>êde Dictionary</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --ipa-color: #64748b;
+        }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .flag-icon {
+            width: 60px;
+            height: 40px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .top-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 200;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .learn-btn {
+            background: linear-gradient(135deg, #58cc02 0%, #4caf50 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(88, 204, 2, 0.3);
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .learn-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px -1px rgba(88, 204, 2, 0.4);
+        }
+        
+        .lang-selector {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .lang-selector label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .lang-selector select {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .controls { 
+            background: white; padding: 20px; border-radius: 12px; 
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); 
+            position: sticky; top: 20px; z-index: 100;
+            display: grid; grid-template-columns: 2fr 1fr; gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        input, select { 
+            padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem;
+        }
+
+        .letter-header { 
+            font-size: 1.5rem; font-weight: 800; color: var(--primary); 
+            padding: 20px 0 10px 10px; border-bottom: 2px solid #e2e8f0; margin-top: 20px;
+        }
+
+        .dictionary-list { display: grid; gap: 10px; margin-top: 10px; }
+        
+        .entry { 
+            background: white; padding: 16px; border-radius: 10px; 
+            display: flex; align-items: baseline; gap: 15px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .word-box { min-width: 180px; }
+        .word { font-weight: 700; font-size: 1.1rem; color: #0f172a; display: block; }
+        .ipa { font-size: 0.9rem; color: var(--ipa-color); font-family: 'Charis SIL', serif; }
+        
+        .pos { 
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            background: #eff6ff; color: var(--primary); 
+            padding: 2px 8px; border-radius: 4px; white-space: nowrap;
+        }
+        .meaning { color: #475569; flex: 1; }
+        .stats { grid-column: span 2; font-size: 0.85rem; color: #64748b; }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--ipa-color);
+        }
+        
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        button {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 700px) {
+            .controls { grid-template-columns: 1fr; }
+            .entry { flex-direction: column; gap: 6px; }
+            .word-box { min-width: auto; }
+            .top-bar {
+                position: static;
+                margin-bottom: 20px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <a href="learn/index.html" class="learn-btn">
+        🦝 Start Learning
+    </a>
+    <div class="lang-selector">
+        <label for="langSelect">Language:</label>
+        <select id="langSelect">
+            <option value="en">English</option>
+        </select>
+    </div>
+</div>
+
+<div class="container">
+    <header><h1>êde Dictionary</h1></header>
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="Search word, IPA, or definition...">
+        <select id="posFilter">
+            <option value="all">All Parts of Speech</option>
+        </select>
+        <div class="stats" id="stats">Total Words: 0</div>
+        <button onclick="window.location.href='êde.pdf'">Documentation</button>
+    </div>
+
+    <div id="dictionaryDisplay"></div>
+</div>
+
+<script>
+    let dictionaryData = {};
+    let currentLanguage = 'en';
+
+    // Language file configuration
+    const languageFiles = {
+        'en': 'dictionary-en.json'
+    };
+
+    function normalize(str) {
+        return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                  .replace(/ķ/g, 'k').replace(/ż/g, 'z').replace(/ģ/g, 'g')
+                  .replace(/ž/g, 'z').replace(/ǩ/g, 'k').replace(/â/g, 'a');
+    }
+
+    async function loadLanguage(lang) {
+        const display = document.getElementById('dictionaryDisplay');
+        display.innerHTML = '<div class="loading">Loading dictionary...</div>';
+        
+        try {
+            const response = await fetch(languageFiles[lang]);
+            if (!response.ok) {
+                throw new Error(`Failed to load ${lang} dictionary`);
+            }
+            dictionaryData = await response.json();
+            currentLanguage = lang;
+            init();
+        } catch (error) {
+            display.innerHTML = `<div class="error">Error loading dictionary: ${error.message}<br>Make sure ${languageFiles[lang]} exists in the same directory.</div>`;
+            console.error('Dictionary load error:', error);
+        }
+    }
+
+    function init() {
+        const posFilter = document.getElementById('posFilter');
+        posFilter.innerHTML = '<option value="all">All Parts of Speech</option>';
+        
+        const poses = [...new Set(Object.values(dictionaryData).map(e => e.pos))].sort();
+        poses.forEach(pos => {
+            const opt = document.createElement('option');
+            opt.value = pos; 
+            opt.textContent = pos;
+            posFilter.appendChild(opt);
+        });
+        render();
+    }
+
+    function render() {
+        const query = normalize(document.getElementById('searchInput').value);
+        const filter = document.getElementById('posFilter').value;
+        const display = document.getElementById('dictionaryDisplay');
+        display.innerHTML = '';
+
+        const keys = Object.keys(dictionaryData).filter(word => {
+            const entry = dictionaryData[word];
+            const matchesSearch = normalize(word).includes(query) || 
+                                 normalize(entry.meaning).includes(query) || 
+                                 entry.ipa.includes(query);
+            const matchesPos = filter === 'all' || entry.pos === filter;
+            return matchesSearch && matchesPos;
+        }).sort((a, b) => normalize(a).localeCompare(normalize(b)));
+
+        document.getElementById('stats').textContent = `Showing ${keys.length} entries`;
+
+        let currentLetter = '';
+        keys.forEach(word => {
+            const normWord = normalize(word);
+            const firstLetter = (normWord.charAt(0) || '?').toUpperCase();
+            
+            if (firstLetter !== currentLetter) {
+                currentLetter = firstLetter;
+                const h = document.createElement('div');
+                h.className = 'letter-header'; 
+                h.textContent = currentLetter;
+                display.appendChild(h);
+            }
+
+            const entry = dictionaryData[word];
+            const div = document.createElement('div');
+            div.className = 'entry';
+            div.innerHTML = `
+                <div class="word-box">
+                    <span class="word">${word}</span>
+                    <span class="ipa">${entry.ipa}</span>
+                </div>
+                <span class="pos">${entry.pos}</span>
+                <span class="meaning">${entry.meaning}</span>
+            `;
+            display.appendChild(div);
+        });
+    }
+
+    document.getElementById('searchInput').addEventListener('input', render);
+    document.getElementById('posFilter').addEventListener('change', render);
+    document.getElementById('langSelect').addEventListener('change', (e) => {
+        loadLanguage(e.target.value);
+    });
+
+    window.onload = () => loadLanguage('en');
+</script>
+</body>
+</html>
