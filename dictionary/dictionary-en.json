@@ -274,6 +274,9 @@
   "wîtê": { "ipa": "/'waɪ.ti:/", "pos": "prep", "meaning": "with." },
   "nôwîtê": { "ipa": "/'noʊ.waɪ.ti:/", "pos": "prep", "meaning": "not with; without." },
   "kadpoķê": { "ipa": "/kæd.pɔ.'si:/", "pos": "adv", "meaning": "any place; anywhere." },
-  "atluǩ": { "ipa": "/'at.lʌsk/", "pos": "verb", "meaning": "to inquire or ask." },
+  "atluǩ": { "ipa": "/'æt.lʌsk/", "pos": "verb", "meaning": "to inquire or ask." },
+  "lafu": { "ipa": "/'læ.fʌ/", "pos": "noun", "meaning": "a laugh." },
+  "lafâķ": { "ipa": "/læf.'eɪs/", "pos": "verb", "meaning": "to laugh." },
+  "fratluǩ": { "ipa": "/'fræt.lʌsk/", "pos": "verb", "meaning": "to respond to a question." },
   "żōkêpênte": { "ipa": "/’ʃu:.ki:.pi:n.tɛ/", "pos": "noun", "meaning": "A pejorative term used to insult; snake sucker." }
 }
