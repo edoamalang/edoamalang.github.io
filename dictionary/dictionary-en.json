@@ -199,7 +199,7 @@
   "dōrlîķâķ": { "ipa": "/'du:r.laɪ.seɪs/", "pos": "verb", "meaning": "To be half asleep; to drowse or nod off." },
   "dōrlînân": { "ipa": "/'du:r.laɪ.neɪsn/", "pos": "adj", "meaning": "Feeling sleepy or lethargic; drowsy." },
   "adlî": { "ipa": "/æd.'laɪ/", "pos": "adv", "meaning": "Very close in space, time, or degree; nearly." },
-  "adlîķâķ": { "ipa": "/æd.'laɪ.seɪs/", "pos": "verb", "meaning": "To move closer in distance or time." },
+  "adlîķâķ": { "ipa": "/æd.'laɪ.seɪs/", "pos": "verb", "meaning": "To move closer in distance or time; come" },
   "ķōblî": { "ipa": "/'su:.blaɪ/", "pos": "adv", "meaning": "Quickly and unexpectedly; suddenly." },
   "odkê": { "ipa": "/ɔd.'ki:/", "pos": "noun", "meaning": "The faculty of perceiving sounds; the sense of hearing." },
   "odkêķâķ": { "ipa": "/ɔd.'ki:.seɪs/", "pos": "verb", "meaning": "To perceive sound with the ear." },
@@ -254,5 +254,14 @@
   "nô-": { "ipa": "/'noʊ/", "pos": "pre", "meaning": "negation prefix." },
   "hōn": { "ipa": "/'hu:n/", "pos": "pron", "meaning": "inquisitive pronoun." },
   "hōnên": { "ipa": "/'hu:.ni:n/", "pos": "pron", "meaning": "inquisitive possessive pronoun. (as in 'whose')" },
+  "ǩelêtunâķ": { "ipa": "/skɛ.'li:.tʌn/", "pos": "verb", "meaning": "To possess, to have." },
+  "ralōnâķ": { "ipa": "/ræ.'lu:.neɪs/", "pos": "verb", "meaning": "to know" },
+  "ralōn": { "ipa": "/ræ.'lu:n/", "pos": "noun", "meaning": "knowledge" },
+  "telêkêm": { "ipa": "/tɛ.'li:.ki:m/", "pos": "verb", "meaning": "to see or look" },
+  "gif": { "ipa": "/gif/", "pos": "verb", "meaning": "to give" },
+  "jegif": { "ipa": "/jɛ.gif/", "pos": "verb", "meaning": "to recieve or take a voluntary gift" },
+  "jetżêk": { "ipa": "/jɛ.'tʃi:k/", "pos": "verb", "meaning": "to steal" },
+  "tżelmen": { "ipa": "/'tʃɛl.mɛn/", "pos": "verb", "meaning": "to attempt or try" },
+  "kel": { "ipa": "/'kɛl/", "pos": "verb", "meaning": "to stop or cease" },
   "żōkêpênte": { "ipa": "/’ʃu:.ki:.pi:n.tɛ/", "pos": "noun", "meaning": "A pejorative term used to insult; snake sucker." }
 }
