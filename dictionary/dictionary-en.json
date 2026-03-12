@@ -270,5 +270,8 @@
   "grōkên": { "ipa": "/'gru:.ki:n/", "pos": "det", "meaning": "denotes previously mentioned or commonly known things." },
   "krolunê": { "ipa": "/'krɔ.lʌ.ni:/", "pos": "adj", "meaning": "slow." },
   "kropunê": { "ipa": "/'krɔ.pʌ.ni:/", "pos": "adj", "meaning": "fast." },
+  "pôrê": { "ipa": "/'poʊ.ri:/", "pos": "prep", "meaning": "for (beneficiary)." },
+  "wîtê": { "ipa": "/'waɪ.ti:/", "pos": "prep", "meaning": "with." },
+  "nôwîtê": { "ipa": "/'noʊ.waɪ.ti:/", "pos": "prep", "meaning": "not with; without." },
   "żōkêpênte": { "ipa": "/’ʃu:.ki:.pi:n.tɛ/", "pos": "noun", "meaning": "A pejorative term used to insult; snake sucker." }
 }
