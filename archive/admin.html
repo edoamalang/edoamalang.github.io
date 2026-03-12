@@ -1,4 +1,5 @@
-<!DOCTYPE 
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -302,4 +303,19 @@
       });
     }
 
-    async function updat
+    async function updateStatus(id, status) {
+      const card = document.getElementById(`card-${id}`);
+      const btns = card.querySelectorAll("button");
+      btns.forEach(b => b.disabled = true);
+      try {
+        await updateDoc(doc(db, "archive", id), { status });
+        card.style.opacity = "0.4";
+        setTimeout(() => card.remove(), 600);
+      } catch (err) {
+        btns.forEach(b => b.disabled = false);
+        alert(`Error: ${err.message}`);
+      }
+    }
+  </script>
+</body>
+</html>
