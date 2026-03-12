@@ -278,5 +278,18 @@
   "lafu": { "ipa": "/'læ.fʌ/", "pos": "noun", "meaning": "a laugh." },
   "lafâķ": { "ipa": "/læf.'eɪs/", "pos": "verb", "meaning": "to laugh." },
   "fratluǩ": { "ipa": "/'fræt.lʌsk/", "pos": "verb", "meaning": "to respond to a question." },
+  "ântê": { "ipa": "/'eɪn.ti:/", "pos": "prep", "meaning": "at a previous point in time; before." },
+  "kântê": { "ipa": "/'keɪn.ti:/", "pos": "prep", "meaning": "at a previous point in time; before." },
+  "pântê": { "ipa": "/'peɪn.ti:/", "pos": "prep", "meaning": "at a point in time to come; after." },
+  "untêr": { "ipa": "/ʌn.'ti:r/", "pos": "prep", "meaning": "under, beneath." },
+  "ōptêr": { "ipa": "/'u:p.ti:r/", "pos": "prep", "meaning": "above." },
+  "fâlî": { "ipa": "/'feɪ.laɪ/", "pos": "prep", "meaning": "far in distance." },
+  "fâlîķâķ": { "ipa": "/'feɪ.laɪ.seɪs/", "pos": "verb", "meaning": "to move farther in distance." },
+  "jōnt": { "ipa": "/'ju:nt/", "pos": "conj", "meaning": "until." },
+  "kôtō": { "ipa": "/'koʊ.tu:/", "pos": "conj", "meaning": "therefore." },
+  "vêl": { "ipa": "/'vi:l/", "pos": "conj", "meaning": "or." },
+  "žê": { "ipa": "/'ʒi:/", "pos": "conj", "meaning": "in the case of/that; if." },
+  "kwân": { "ipa": "/'kweɪn/", "pos": "conj", "meaning": "at the time of/that; when." },
+  "kwân": { "ipa": "/'kweɪn/", "pos": "conj", "meaning": "at the time of/that; when." },
   "żōkêpênte": { "ipa": "/’ʃu:.ki:.pi:n.tɛ/", "pos": "noun", "meaning": "A pejorative term used to insult; snake sucker." }
 }
