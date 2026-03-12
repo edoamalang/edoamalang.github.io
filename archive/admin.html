@@ -13,7 +13,7 @@
       --bg: #1e1d1b; --fg: #e8e4dc; --fg-muted: #aaa; --fg-subtle: #666;
       --card-bg: rgba(40,38,34,0.9); --card-border: rgba(255,255,255,0.08);
       --nav-bg: rgba(30,29,27,0.95); --divider: rgba(255,255,255,0.08);
-      --input-bg: #2a2825; --green: #4caf50; --red: #ef5350;
+      --input-bg: #2a2825; --green: #4caf50; --red: #ef5350; --orange: #ff9800;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Newsreader', Georgia, serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
@@ -52,11 +52,14 @@
     .sub-link:hover { text-decoration: underline; }
     .sub-date { font-family: 'Syne', sans-serif; font-size: 0.65rem; color: var(--fg-subtle); }
     .sub-actions { display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-end; }
-    .approve-btn, .reject-btn { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 1rem; border: none; border-radius: 2px; cursor: pointer; transition: opacity 0.2s; white-space: nowrap; }
+    .approve-btn, .reject-btn, .remove-btn, .pending-btn { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 1rem; border: none; border-radius: 2px; cursor: pointer; transition: opacity 0.2s; white-space: nowrap; }
     .approve-btn { background: var(--green); color: #fff; }
     .reject-btn { background: var(--red); color: #fff; }
-    .approve-btn:hover, .reject-btn:hover { opacity: 0.85; }
-    .approve-btn:disabled, .reject-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    /* "Move to pending" — a neutral amber outline button */
+    .pending-btn { background: none; border: 1px solid var(--amber); color: var(--amber); }
+    .approve-btn:hover, .reject-btn:hover, .remove-btn:hover { opacity: 0.85; }
+    .pending-btn:hover { background: var(--amber-muted); }
+    .approve-btn:disabled, .reject-btn:disabled, .pending-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
     .status-badge { font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.6rem; border-radius: 2px; }
     .status-badge.approved { background: rgba(76,175,80,0.15); color: var(--green); border: 1px solid rgba(76,175,80,0.3); }
@@ -65,6 +68,19 @@
     .empty { padding: 3rem; text-align: center; color: var(--fg-subtle); font-style: italic; }
     .loading { padding: 3rem; text-align: center; color: var(--fg-subtle); font-family: 'Syne', sans-serif; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
     .error-msg { padding: 1rem; background: rgba(239,83,80,0.1); border: 1px solid rgba(239,83,80,0.3); border-radius: 2px; color: var(--red); font-family: 'Syne', sans-serif; font-size: 0.8rem; margin-bottom: 1rem; display: none; }
+
+    /* Confirm dialog overlay */
+    .confirm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+    .confirm-box { background: #28261f; border: 1px solid var(--card-border); border-radius: 4px; padding: 2rem; max-width: 380px; width: 100%; }
+    .confirm-box p { font-size: 0.95rem; color: var(--fg-muted); margin-bottom: 1.5rem; line-height: 1.5; }
+    .confirm-box strong { color: var(--fg); font-family: 'Syne', sans-serif; }
+    .confirm-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
+    .confirm-cancel { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.45rem 1rem; background: none; border: 1px solid var(--divider); color: var(--fg-muted); border-radius: 2px; cursor: pointer; }
+    .confirm-cancel:hover { border-color: var(--fg-muted); }
+    .confirm-ok { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.45rem 1rem; border: none; border-radius: 2px; cursor: pointer; }
+    .confirm-ok.danger { background: var(--red); color: #fff; }
+    .confirm-ok.safe { background: var(--green); color: #fff; }
+    .confirm-ok.neutral { background: var(--amber); color: #1e1d1b; }
   </style>
 </head>
 <body>
@@ -216,9 +232,23 @@
           ? `<a class="sub-link" href="${e.fileUrl}" target="_blank">Download file ↗</a>`
           : "<span style='color:var(--fg-subtle);font-size:0.8rem'>No content attached</span>";
 
-        const actions = status === "pending"
-          ? `<button class="approve-btn" data-id="${e.id}">Approve</button><button class="reject-btn" data-id="${e.id}">Reject</button>`
-          : `<span class="status-badge ${status}">${status}</span>`;
+        let actions;
+        if (status === "pending") {
+          actions = `
+            <button class="approve-btn" data-id="${e.id}" data-action="approved">Approve</button>
+            <button class="reject-btn"  data-id="${e.id}" data-action="rejected">Reject</button>`;
+        } else if (status === "approved") {
+          actions = `
+            <span class="status-badge approved">Approved</span>
+            <button class="reject-btn"  data-id="${e.id}" data-action="rejected">Reject</button>
+            <button class="pending-btn" data-id="${e.id}" data-action="pending">Move to Pending</button>`;
+        } else {
+          // rejected
+          actions = `
+            <span class="status-badge rejected">Rejected</span>
+            <button class="approve-btn" data-id="${e.id}" data-action="approved">Approve</button>
+            <button class="pending-btn" data-id="${e.id}" data-action="pending">Move to Pending</button>`;
+        }
 
         return `
           <div class="submission-card" id="card-${e.id}">
@@ -234,12 +264,42 @@
           </div>`;
       }).join("");
 
-      // Bind action buttons
-      list.querySelectorAll(".approve-btn").forEach(btn => {
-        btn.addEventListener("click", () => updateStatus(btn.dataset.id, "approved"));
+      // Bind all action buttons uniformly
+      list.querySelectorAll("[data-action]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const targetStatus = btn.dataset.action;
+          const id = btn.dataset.id;
+          const entry = entries.find(e => e.id === id);
+          confirmAction(id, targetStatus, entry?.title ?? "this submission");
+        });
       });
-      list.querySelectorAll(".reject-btn").forEach(btn => {
-        btn.addEventListener("click", () => updateStatus(btn.dataset.id, "rejected"));
+    }
+
+    // ── Confirm dialog ────────────────────────────────────────────────────────
+    function confirmAction(id, targetStatus, title) {
+      const messages = {
+        approved: { text: `Approve <strong>"${title}"</strong>? It will appear in the public archive.`, okLabel: "Approve", okClass: "safe" },
+        rejected: { text: `Reject <strong>"${title}"</strong>? It will be moved to the Rejected tab.`, okLabel: "Reject", okClass: "danger" },
+        pending:  { text: `Move <strong>"${title}"</strong> back to Pending for re-review?`, okLabel: "Move to Pending", okClass: "neutral" },
+      };
+      const { text, okLabel, okClass } = messages[targetStatus];
+
+      const overlay = document.createElement("div");
+      overlay.className = "confirm-overlay";
+      overlay.innerHTML = `
+        <div class="confirm-box">
+          <p>${text}</p>
+          <div class="confirm-actions">
+            <button class="confirm-cancel">Cancel</button>
+            <button class="confirm-ok ${okClass}">${okLabel}</button>
+          </div>
+        </div>`;
+      document.body.appendChild(overlay);
+
+      overlay.querySelector(".confirm-cancel").addEventListener("click", () => overlay.remove());
+      overlay.querySelector(".confirm-ok").addEventListener("click", async () => {
+        overlay.remove();
+        await updateStatus(id, targetStatus);
       });
     }
 
