@@ -310,5 +310,22 @@
   "vêl": { "ipa": "/'vi:l/", "pos": "conj", "meaning": "or." },
   "žê": { "ipa": "/'ʒi:/", "pos": "conj", "meaning": "in the case of/that; if." },
   "kwân": { "ipa": "/'kweɪn/", "pos": "conj", "meaning": "at the time of/that; when." },
+  "hōmelân": { "ipa": "/'hu:.mɛ.leɪn/", "pos": "adjective", "meaning": "mocking, degrading, or humiliating." },
+  "hōmelō": { "ipa": "/'hu:.mɛ.lu:/", "pos": "noun", "meaning": "humiliation or mockery." },
+  "lîku": { "ipa": "/'leɪ.kʌ/", "pos": "noun", "meaning": "A distance." },
+  "kôrân": { "ipa": "/'koʊ.ɹeɪn/", "pos": "noun", "meaning": "A competition of speed between two or more participants; a race." },
+  "kôrânâķ": { "ipa": "/'koʊ.ɹeɪn.eɪs/", "pos": "verb", "meaning": "To compete in a contest of speed; to race." },
+  "krog": { "ipa": "/krɔ.'geɪs/", "pos": "verb", "meaning": "To move swiftly on foot; to run." },
+  "ķâķ": { "ipa": "/'seɪs/", "pos": "verb", "meaning": "To consent or come to the same opinion; to agree." },
+  "velp": { "ipa": "/'vɛlp/", "pos": "noun", "meaning": "A carnivorous mammal (Vulpes vulpes) known for its cunning; a fox." },
+  "nōrâ": { "ipa": "/'nu:.ɹeɪs/", "pos": "verb", "meaning": "To form an opinion or conclusion through reasoning; to judge." },
+  "nōrōvên": { "ipa": "/'nu:.ɹu:.vi:n/", "pos": "noun", "meaning": "A person who makes decisions or assessments; a judge." },
+  "krōn": { "ipa": "/'kru:.neɪs/", "pos": "verb", "meaning": "To begin or set in motion; to start." },
+  "mov": { "ipa": "/'mɔv/", "pos": "verb", "meaning": "To travel from one place to another; to go." },
+  "paķ": { "ipa": "/'pæs/", "pos": "verb", "meaning": "To move past or beyond something; to pass." },
+  "êntêonpoķê": { "ipa": "/'i:n.ti:.ɔn.pɔ.si:/", "pos": "noun", "meaning": "The intended destination or end point of a race or journey; a goal." },
+  "kôrânpoķê": { "ipa": "/'koʊ.ɹeɪn.pɔ.si:/", "pos": "noun", "meaning": "The path or route along which a race takes place; a course." },
+  "lanâķōmân": { "ipa": "/læ.'neɪ.su:.meɪn/", "pos": "adj", "meaning": "Feeling amusement or finding something absurdly funny; amused." },
+  "blôkân": { "ipa": "/'bloʊ.keɪn/", "pos": "adj", "meaning": "So absurd or unreasonable as to invite mockery; ridiculous." }
   "żōkêpênte": { "ipa": "/'ʃu:.ki:.pi:n.tɛ/", "pos": "noun", "meaning": "A pejorative term used to insult; snake sucker." }
 }
