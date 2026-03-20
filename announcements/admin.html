@@ -251,7 +251,7 @@
       btn.textContent = "Publishing…";
 
       try {
-        await addDoc(collection(db, "announcements"), { title, preview, body, datePosted: serverTimestamp() });
+        await addDoc(collection(db, "announcements"), { title, preview, body, datePosted: serverTimestamp(), postedToDiscord: false });
         statusEl.className = "compose-status success";
         statusEl.textContent = "Published!";
         document.getElementById("post-title").value = "";
